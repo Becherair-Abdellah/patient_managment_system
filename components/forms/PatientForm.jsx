@@ -1,6 +1,4 @@
 "use client"
-
-import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
@@ -12,6 +10,9 @@ import i2 from '@/app/assets/icon/email.svg'
 import SubmitButton from "../SubmitButton"
 import { useState } from "react"
 import { UserFormValidation } from "@/lib/validtaion"
+import { createuser } from "@/lib/actions/patient.actions"
+import { useRouter } from "next/navigation"
+
 export const FormFieldTypes = {
   Input: 'input',
   Textarea: 'textarea',
@@ -25,6 +26,7 @@ export const FormFieldTypes = {
 
 function PatientForm() {
   const [isLoading,setIsLoading] = useState(false);
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(UserFormValidation),
     defaultValues: {
@@ -34,32 +36,50 @@ function PatientForm() {
     },
   });
     // 2. Define a submit handler.
-    function onSubmit(values) {
-      // Do something with the form values.
-      // ✅ This will be type-safe and validated.
+  async  function onSubmit({name,email,phone}) {
       setIsLoading(true);
-      console.log('re run');
+      try{
+        const userData = {name,email,phone};
+        const user = await createuser(userData);
+       
+       if (user) router.push(`patients/${user.$id}/register`);
+      }
+      
+      
+      
+      catch(error){
+        console.log(error)
+      }
     }
   return (
     <Form {...form}>
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-      <CustomField
-      fieldType={FormFieldTypes.Input}
-      control={form.control}
-      name="abdellah"
-      label="Full Name"
-      placeholder="Jhon Doe"
-      iconSrc={i1}
-      iconAlt="user"
-      />
 
-<CustomField
+<CustomField fieldType={FormFieldTypes.Input}
+      control={form}
+      name="name"
+      label="Full name"
+      placeholder="Abdellah"
+      iconSrc={i1} 
+      iconAlt="user"/>
+<CustomField fieldType={FormFieldTypes.Input}
+      control={form?? ''}
+      name="email"
+      label="email"
+      placeholder="abdellah2gmail.com"
+      iconSrc={i2} 
+      iconAlt="email"/>
+
+<CustomField 
       fieldType={FormFieldTypes.phone_input}
-      control={form.control}
+      control={form}
       name="phone"
       label="phone"
-      placeholder="(213) 666 364546"
-      />
+      placeholder="abdellah2gmail.com"
+      iconSrc={i2} 
+      iconAlt="email"
+/>
+
 <SubmitButton isLoading={isLoading}>Get started</SubmitButton>
     </form>
   </Form>

@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
       <body className={cn("",bricolage_font.className)}>
       <ThemeProvider
             attribute="class"
-            defaultTheme="light"
+            defaultTheme="night"
             enableSystem
             disableTransitionOnChange
           >
