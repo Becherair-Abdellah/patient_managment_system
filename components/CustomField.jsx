@@ -20,6 +20,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
+
 
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -104,7 +106,21 @@ const RendredFiled = ({ field, props }) => {
           disabled={props.disabled}
           />
         </FormControl>
+      );
+    case FormFieldTypes.checkbox:
+      return (
+      
+       <FormControl>
+       <div>
+       <Checkbox id={props.name} checked={field.value} onCheckedChange={field.onChange}/>
+        <label htmlFor={props.name}>
+          {props.label}
+        </label>
+       </div>
+       </FormControl>
+         
       )
+    
   }
 };
 
@@ -117,7 +133,7 @@ function CustomField(props) {
       render={({ field }) => (
         <FormItem>
           {fieldType !== FormFieldTypes.checkbox && label && (
-            <FormLabel>{label}</FormLabel>
+            <FormLabel>{label }</FormLabel>
           )}
           <RendredFiled field={field} props={props} />
           {/* <FormDescription>

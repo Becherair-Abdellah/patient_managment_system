@@ -10,21 +10,27 @@ import i2 from "@/app/assets/icon/email.svg";
 import SubmitButton from "../SubmitButton";
 import { useState } from "react";
 import { UserFormValidation } from "@/lib/validtaion";
-import { createuser } from "@/lib/actions/patient.actions";
+import { createuser, registerPatient } from "@/lib/actions/patient.actions";
 import { useRouter } from "next/navigation";
 import { FormFieldTypes } from "./PatientForm";
 import { Label } from "@/components/ui/label";
-import { GenderField } from "@/app/constants/GenderField";
+import { GenderField } from "@/app/constants/constants";
+import { IdentificationTypes } from "@/app/constants/constants";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Doctors } from "@/app/constants/GenderField";
+import { Doctors } from "@/app/constants/constants";
 import { SelectItem } from "@/components/ui/select";
 import Image from "next/image";
-function RegisterForm() {
+import FileUploder from "../FileUploder";
+import { PatientFormValidation } from "@/lib/validtaion";
+import { PatientFormDefaultValues } from "@/app/constants/constants";
+function RegisterForm({user}) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const form = useForm({
-    resolver: zodResolver(UserFormValidation),
+    resolver: zodResolver(PatientFormValidation),
+    
     defaultValues: {
+      ...PatientFormDefaultValues,
       name: "",
       email: "",
       phone: "",
@@ -32,16 +38,19 @@ function RegisterForm() {
     },
   });
   // 2. Define a submit handler.
-  async function onSubmit({ name, email, phone }) {
-    setIsLoading(true);
-    try {
-      const userData = { name, email, phone };
-      const user = await createuser(userData);
-      console.log(user);
-      if (user) router.push(`/patients/`);
-    } catch (error) {
-      console.log(error);
-    }
+  async function onSubmit({
+    identificationDocument,...patient}) {
+      let formData ;
+      if(identificationDocument && identificationDocument.length>0){
+        const blobFile = new Blob([identificationDocument[0]],{type:identificationDocument[0].type});
+        formData = new FormData();
+        formData.append('fileBlob',blobFile);
+        formData.append(fileName,identificationDocument[0].name)
+      }
+     
+      console.log(blobFile);
+    const newPatient = await registerPatient({
+      blobFile,...patient});
   }
   return (
     <Form {...form}>
@@ -82,8 +91,8 @@ function RegisterForm() {
           <CustomField
             fieldType={FormFieldTypes.date_picker}
             control={form}
-            name="datepicker"
-            label="datepicker"
+            name="birthDate"
+            label="birth Date"
             // placeholder="abdellah2gmail.com"
             iconSrc={i2}
             // iconAlt="email"
@@ -91,7 +100,7 @@ function RegisterForm() {
           <CustomField
             fieldType={FormFieldTypes.skeleton}
             control={form}
-            name="Genders"
+            name="gender"
             label="Genders"
             // placeholder="abdellah2gmail.com"
             iconSrc={i2}
@@ -116,7 +125,7 @@ function RegisterForm() {
           <CustomField
             fieldType={FormFieldTypes.Input}
             control={form}
-            name="Address"
+            name="address"
             label="Address"
             placeholder="14 th Street , New York"
             iconSrc={i2}
@@ -126,7 +135,7 @@ function RegisterForm() {
           <CustomField
             fieldType={FormFieldTypes.Input}
             control={form}
-            name="Occupation"
+            name="occupation"
             label="Occupation"
             placeholder="Softwere engineer"
             iconSrc={i2}
@@ -135,7 +144,7 @@ function RegisterForm() {
           <CustomField
             fieldType={FormFieldTypes.Input}
             control={form}
-            name="EmrgencyContactName"
+            name="emergencyContactName"
             label="Emergency Contact Name"
             placeholder="Softwere engineer"
             iconSrc={i2}
@@ -144,7 +153,7 @@ function RegisterForm() {
           <CustomField
             fieldType={FormFieldTypes.phone_input}
             control={form}
-            name="EmrgencyContactNumber"
+            name="emergencyContactNumber"
             label="Emrgency Contact Number"
             placeholder=""
             iconSrc={i2}
@@ -164,7 +173,7 @@ function RegisterForm() {
         <CustomField
           fieldType={FormFieldTypes.select}
           control={form}
-          name="doctors"
+          name="primaryPhysician"
           label="Doctors"
           placeholder="Select Phosician"
           iconSrc={i2}
@@ -187,7 +196,7 @@ function RegisterForm() {
         <CustomField
           fieldType={FormFieldTypes.Input}
           control={form}
-          name="InsuranceProvider"
+          name="insuranceProvider"
           label="Insurance Provider"
           placeholder="blue ride fide"
           iconSrc={i2}
@@ -196,7 +205,7 @@ function RegisterForm() {
         <CustomField
           fieldType={FormFieldTypes.Input}
           control={form}
-          name="InsurancePolicyNumber"
+          name="insurancePolicyNumber"
           label="Insurance Policy Number"
           placeholder="ABC123456789"
           iconSrc={i2}
@@ -215,7 +224,7 @@ function RegisterForm() {
         <CustomField
           fieldType={FormFieldTypes.Textarea}
           control={form}
-          name="CurrentMedication"
+          name="currentMedication"
           label="Current Medication"
           placeholder="Paracetamol 500mg , Ibuprofen 200mg"
           iconSrc={i2}
@@ -225,7 +234,7 @@ function RegisterForm() {
         <CustomField
           fieldType={FormFieldTypes.Textarea}
           control={form}
-          name="FamilyMedicalHistory"
+          name="familyMedicalHistory"
           label="Family Medical History"
           placeholder="just some allergies"
           iconSrc={i2}
@@ -234,7 +243,7 @@ function RegisterForm() {
         <CustomField
           fieldType={FormFieldTypes.Textarea}
           control={form}
-          name="PastMedicalHistory"
+          name="pastMedicalHistory"
           label="Past Medical History"
           placeholder="tonsiloctomy"
           iconSrc={i2}
@@ -249,6 +258,76 @@ function RegisterForm() {
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam
           dolorum aliquam, quibusdam aperiam voluptatum.
         </p>
+
+        <CustomField
+          fieldType={FormFieldTypes.select}
+          control={form}
+          name="identificationType"
+          label="Identification Type"
+          placeholder="Ex: Driver's License"
+          iconSrc={i2}
+          // iconAlt="email"
+        >
+          {IdentificationTypes.map((idType) => (
+            <SelectItem key={idType} value={idType}>
+              {idType}
+            </SelectItem>
+          ))}
+        </CustomField>
+        <CustomField
+          fieldType={FormFieldTypes.Input}
+          control={form}
+          name="identificationNumber"
+          label="Identification Number"
+          placeholder="Ex: 12345668"
+          iconSrc={i2}
+          // iconAlt="email"
+        />
+
+        <CustomField
+          fieldType={FormFieldTypes.skeleton}
+          control={form}
+          name="identificationDocument"
+          label="Scanned copy of identification document"
+          // placeholder="abdellah2gmail.com"
+          iconSrc={i2}
+          // iconAlt="email"
+          renderSkeleton={(field) => (
+            <FormControl>
+              <FileUploder files={field.value} onChange={field.onChange} />
+            </FormControl>
+          )}
+        />
+
+        <div>
+          <CustomField
+            fieldType={FormFieldTypes.checkbox}
+            control={form}
+            name="treatmentConsent"
+            label="I consent to Treatment"
+             placeholder="abdellah2gmail.com"
+            //iconSrc={i2}
+            // iconAlt="email"
+          />
+          <CustomField
+            fieldType={FormFieldTypes.checkbox}
+            control={form}
+            name="disclosureConsent"
+            label="I consent to Treatment"
+             placeholder="abdellah2gmail.com"
+            //iconSrc={i2}
+            // iconAlt="email"
+          />
+          <CustomField
+            fieldType={FormFieldTypes.checkbox}
+            control={form}
+            name="privacyConsent"
+            label="I consent to Treatment"
+             placeholder="abdellah2gmail.com"
+            //iconSrc={i2}
+            // iconAlt="email"
+          />
+        </div>
 
         <SubmitButton isLoading={isLoading}>Get started</SubmitButton>
       </form>
