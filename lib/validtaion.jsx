@@ -73,3 +73,17 @@ export const PatientFormValidation = z.object({
         message: "You must consent to privacy in order to proceed",
       }),
   });
+
+export const CreateAppointmentSchema = z.object({
+    primaryPhysician: z.string().min(2, "Select at least one doctor"),
+    schedule: z
+    .union([z.date(), z.string().refine(val => !isNaN(Date.parse(val)), "Invalid date format")])
+    .refine(val => val !== '', { message: 'Date is required' })
+    .refine(val => new Date(val) >= new Date(), { message: 'Date must not be in the past' }),
+    reason: z
+      .string()
+      .min(2, "Reason must be at least 2 characters")
+      .max(500, "Reason must be at most 500 characters"),
+    note: z.string().optional(),
+    cancellationReason: z.string().optional(),
+  });

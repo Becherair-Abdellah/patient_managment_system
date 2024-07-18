@@ -12,6 +12,7 @@ import { useState } from "react"
 import { UserFormValidation } from "@/lib/validtaion"
 import { createuser } from "@/lib/actions/patient.actions"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export const FormFieldTypes = {
   Input: 'input',
@@ -81,6 +82,9 @@ function PatientForm() {
 />
 
 <SubmitButton isLoading={isLoading}>Get started</SubmitButton>
+<Link href={'/?admin=true'}>
+<button className="text-red-900">admin</button>
+</Link>
     </form>
   </Form>
   )

@@ -75,6 +75,8 @@ const RendredFiled = ({ field, props }) => {
             <DatePicker
               selected={field.value}
               onChange={(date) => field.onChange(date)}
+              showTimeSelect={props.showTimeSelect ?? false}
+            dateFormat={props.dateFormat ?? 'MM/dd/yyyy'}
             />
           </FormControl>
         </div>

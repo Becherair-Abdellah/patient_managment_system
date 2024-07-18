@@ -45,12 +45,16 @@ function RegisterForm({user}) {
         const blobFile = new Blob([identificationDocument[0]],{type:identificationDocument[0].type});
         formData = new FormData();
         formData.append('fileBlob',blobFile);
-        formData.append(fileName,identificationDocument[0].name)
+        formData.append("fileName",identificationDocument[0].name)
       }
      
-      console.log(blobFile);
-    const newPatient = await registerPatient({
-      blobFile,...patient});
+      const PatientData ={
+        userId: user.$id,
+        identificationDocument: formData,
+        ...patient
+      }
+    const newPatient = await registerPatient(PatientData);
+    if(newPatient) router.push(`/patients/${user.$id}/new-appointment`);
   }
   return (
     <Form {...form}>
