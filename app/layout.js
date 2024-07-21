@@ -1,7 +1,5 @@
 import {  Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/components/theme-provider";
 const bricolage_font = Bricolage_Grotesque({
    subsets: ["latin"] ,
    weight: ['200','300','400','500','600','700'],
@@ -9,7 +7,7 @@ const bricolage_font = Bricolage_Grotesque({
   });
 
 export const metadata = {
-  title: "AppoinHealth",
+  title: "AppointHealth",
   description: "A Healthcare managment system",
 };
 
@@ -18,14 +16,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en"  >
       <body className={cn("",bricolage_font.className)}>
-      <ThemeProvider
-            attribute="class"
-            defaultTheme="night"
-            enableSystem
-            disableTransitionOnChange
-          >
             {children}
-          </ThemeProvider></body>
+          </body>
     </html>
   );
 }
