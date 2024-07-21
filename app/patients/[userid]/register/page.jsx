@@ -1,11 +1,11 @@
 
 // import  from "../components/forms/PatientForm";
 import RegisterForm from "@/components/forms/RegisterForm";
-import { getUser } from "@/lib/actions/patient.actions";
+import { getTest, getUser } from "@/lib/actions/patient.actions";
 import Link from "next/link";
 export default async function Home({params:{userid}}) {
+  
   const user = await getUser(userid);
-
   return (
 <>
 

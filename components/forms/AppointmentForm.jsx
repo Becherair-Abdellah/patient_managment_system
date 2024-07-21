@@ -23,8 +23,8 @@ import Image from "next/image";
 import FileUploder from "../FileUploder";
 import { CreateAppointmentSchema } from "@/lib/validtaion";
 import { PatientFormDefaultValues } from "@/app/constants/constants";
-import { registerNewAppoinetment } from "@/lib/actions/appointment.actions";
-function AppointmentForm({type,userId,patientId}) {
+import { registerNewAppoinetment, updateAppointmentDocuments } from "@/lib/actions/appointment.actions";
+function AppointmentForm({type,userId,patientId,appointment,setOpen}) {
   let labelButton ;
   switch(type){
     case 'create':
@@ -35,9 +35,8 @@ function AppointmentForm({type,userId,patientId}) {
       break;
     case 'schedule':
       labelButton = 'Schedule Apointment';
-      break
+      break;
   }
-  console.log(labelButton);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const form = useForm({
@@ -45,25 +44,28 @@ function AppointmentForm({type,userId,patientId}) {
     
     defaultValues: {
       ...PatientFormDefaultValues,
-      primaryPhysician: "",
-      schedule: new Date(),
-      reason: "",
-      note: "",
-      cancellationReason:""
+      primaryPhysician: appointment ?.primaryPhysician||"",
+      schedule: appointment? new Date(appointment.schedule) : new Date(Date.now()) ,
+      reason: appointment?.reason|| "",
+      note: appointment?.note||"",
+      cancellationReason: appointment?.cancellationReason || ""
     },
   });
   // 2. Define a submit handler.
   async function onSubmit(values) {
+    console.log('CLICKING')
     let status;
     switch(type){
       case 'schedule':
         status = 'scheduled';
+        break;
       case 'cancel':
         status = 'canceled';
+        break;
         default:
           status= 'pending';
     }
-
+    console.log('############# status',status);
     try{
       if(type === 'create' && patientId){
         const newAppointment = {
@@ -84,9 +86,32 @@ function AppointmentForm({type,userId,patientId}) {
         }
 
       }
+      else{
+        const AppointmentToUpdate = {
+          
+          userId,
+          appointmentId:appointment?.$id,
+          appointment: {
+            primaryPhysician: values?.primaryPhysician,
+            schedule: new Date(values?.schedule),
+            status:status,
+            cancellationReason: values?.cancellationReason,
+            reason: values?.reason
+
+          },
+          type
+        }
+        console.log(AppointmentToUpdate);
+        const updateAppointment = await updateAppointmentDocuments(AppointmentToUpdate);
+        console.log(updateAppointment);
+        if(updateAppointment){
+          setOpen(false)
+          form.reset();
+        }
+      }
     }catch (error)
     {
-
+      console.log(error);
     }
 
   }
