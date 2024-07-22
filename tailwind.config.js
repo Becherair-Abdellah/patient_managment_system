@@ -9,15 +9,13 @@ module.exports = {
   ],
   prefix: "",
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
     extend: {
-
+      backgroundColor:{
+        primaryColor: "hsl(235,85,60)",
+      },
+      textColor:{
+        primaryColor: "hsl(235,85,60)",
+      }
     },
   },
   plugins: [],
