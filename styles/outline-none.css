@@ -1,0 +1,3 @@
+.no-focus-outline input {
+    outline: none !important;
+  }

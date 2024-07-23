@@ -15,7 +15,13 @@ module.exports = {
       },
       textColor:{
         primaryColor: "hsl(235,85,60)",
-      }
+      },
+      borderColor:{
+        primaryColor: "hsl(235,85,60)",
+      },
+      animation: {
+        spin_fast: 'spin 0.5s linear infinite',
+      },
     },
   },
   plugins: [],

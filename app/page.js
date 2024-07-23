@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import mediacl from '@/public/assets/medical.svg'
 import Logo from "@/components/Logo"
+import CustomButton from "@/components/CustomButton"
 export default  function Dashboard() {
   return (
    <div className="flex justify-center items-center h-screen">
@@ -23,11 +24,7 @@ export default  function Dashboard() {
     </div>
 
   <div>
-  <Button variant="" className="text-lg text-white bg-primaryColor cursor-pointer w-full">
-    <Link href={'/'} className="w-full">
-    Get start Now
-    </Link>
-    </Button>
+    <CustomButton href={'/register'} text={`Get Started`}/>
   </div>
 
    </div>
