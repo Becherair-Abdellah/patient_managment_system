@@ -6,7 +6,7 @@ import Link from 'next/link'
 import loader from '@/public/assets/loading.svg'
 const CustomButton = ({className,href,type,text,loading,onClick}) => {
   return (
-    <Button onClick={onClick} variant="" type={`${type}`||''} className={className||"text-md text-white bg-primaryColor cursor-pointer w-full"}>
+    <Button onClick={onClick} variant="" type={`${type}`||''} className={`${loading?'bg-red-900 pointer-events-none':''} ${className||"text-md text-white bg-primaryColor cursor-pointer w-full"}`}>
    {!type ?  <Link href={`${href|| ''}`} className="w-full">
    {loading||text}
     </Link>: loading||text}

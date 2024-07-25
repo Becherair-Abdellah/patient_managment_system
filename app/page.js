@@ -5,7 +5,11 @@ import { Button } from "@/components/ui/button"
 import mediacl from '@/public/assets/medical.svg'
 import Logo from "@/components/Logo"
 import CustomButton from "@/components/CustomButton"
-export default  function Dashboard() {
+import { updateVerificationAccount } from "@/lib/actions/register-actions"
+export default async  function Dashboard({searchParams}) {
+  // console.log(userId)
+  // for testing verfied email
+  // await updateVerificationAccount(searchParams);
   return (
    <div className="flex justify-center items-center h-screen">
    <div className=" md:text-center h-fit  md:max-w-[650px]  space-y-14 p-5">

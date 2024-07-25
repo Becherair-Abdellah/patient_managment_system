@@ -48,7 +48,7 @@ const RenderInput = ({ field, props }) => {
               <Input
                 placeholder={props.placeholder}
                 {...field}
-                className={`border-2 border-primaryColor pl-9 font-bold`}
+                className={`border-0 py-4 bg-primaryColor2  pl-9 font-bold`}
               />
             </FormControl>
           </div>
@@ -72,7 +72,7 @@ const RenderInput = ({ field, props }) => {
                 type={!show?"password":""}
                   placeholder={props.placeholder}
                   {...field}
-                  className={`border-2  border-primaryColor pl-9 font-bold`}
+                  className={`border-0 py-4 bg-primaryColor2  pl-9 font-bold`}
                 />
               </FormControl>
               <div className="flex items-center" onClick={()=>{setShow(!show)}}>
@@ -103,7 +103,7 @@ const RenderInput = ({ field, props }) => {
               withCountryCallingCode
               value={field.value}
               onChange={field.onChange}
-              className="border-2 border-primaryColor p-1 outline-none  rounded-md font-bold no-focus-outline"
+              className="border-0 py-4 bg-primaryColor2  pl-9 outline-none  rounded-md font-bold no-focus-outline"
          
             />
           </FormControl>

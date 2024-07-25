@@ -19,9 +19,10 @@ import CustomFormField from "../CustomFormField";
 import CustomButton from "../CustomButton";
 import lock from "@/public/assets/lock.svg";
 import email from "@/public/assets/email-color.svg";
+import user from "@/public/assets/user-color.svg";
 import { UserFormValidation } from "@/lib/validation";
 import { useState } from "react";
-import { createUser } from "@/lib/actions/register-actions";
+import {  logout, register, verificationAccount } from "@/lib/actions/register-actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 // import f from ''
@@ -34,9 +35,9 @@ export default function RegisterUserForm() {
   const form = useForm({
     resolver: zodResolver(UserFormValidation),
     defaultValues: {
+      name:"",
       email:"",
       password: "",
-      phone:"",
     },
   });
 
@@ -45,12 +46,14 @@ export default function RegisterUserForm() {
     // ✅ This will be type-safe and validated.
     setLoading(true);
     try {
-      const newUser = await createUser(values);
+      const newUser = await register(values);
+      // const verifyAccount = await verificationAccount();
       if(newUser){
         router.push(`/patient/${newUser.$id}/register`);
         setLoading(false) ;
+        // const currentUser = await getAccount();
+        // console.log(currentUser);
       }
-      console.log(newUser);
     } catch (error) {
       console.log(error);
     }
@@ -59,8 +62,17 @@ export default function RegisterUserForm() {
   return (
     <>
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mb-4">
     
+      <CustomFormField
+          fieldType={FormFieldType.INPUT}
+          control={form.control}
+          name="name"
+          placeholder="Jhon Deo"
+          label="Name"
+          iconSrc={user}
+          iconAlt="email"
+        />
 
         <CustomFormField
           fieldType={FormFieldType.INPUT}
@@ -82,16 +94,9 @@ export default function RegisterUserForm() {
           iconAlt="user color"
         />
 
-<CustomFormField
-          fieldType={FormFieldType.PHONE_INPUT}
-          control={form.control}
-          name="phone"
-          label="Phone"
-        />
-
         <CustomButton type="submit" text={`Register`}  loading={loading} />
       </form>
-      <div className="text-center">
+      <div className="text-center ">
       <div>
         login as 
          
@@ -102,7 +107,9 @@ export default function RegisterUserForm() {
       </div>
       <div>
         I have an account just need to
-      <Link href='/login' className=""> <strong className="text-primaryColor" >login</strong></Link>
+      <Link href='/register' className=""> <strong className="text-primaryColor" onClick={async()=>{
+        await logout();
+      }} >login</strong></Link>
 !
       </div>
       </div>
