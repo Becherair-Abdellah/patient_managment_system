@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { setErrorMap, z } from "zod";
 import { FormFieldType } from "../CustomFormField";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,26 +20,28 @@ import CustomButton from "../CustomButton";
 import lock from "@/public/assets/lock.svg";
 import email from "@/public/assets/email-color.svg";
 import user from "@/public/assets/user-color.svg";
-import { UserFormValidation } from "@/lib/validation";
+import { LoginUserFormValidation, UserFormValidation } from "@/lib/validation";
 import { useState } from "react";
 import {  logout, register, verificationAccount } from "@/lib/actions/register-actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import CustomAlert from "../CustomAlert";
+import { login } from "@/lib/actions/login-action";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { MdOutlineError } from "react-icons/md";
 import { FaCheckCircle } from "react-icons/fa";
+import CustomAlert from "../CustomAlert";
 // import f from ''
 
 // const formSchema = z.object(UserFormValidation);
 
-export default function RegisterUserForm() {
-  const [error,setError] = useState(false);
+export default function LoginUserForm() {
   const [loading,setLoading] = useState(false);
+  const [error,setError] = useState(false);
   const router = useRouter();
+
   const form = useForm({
-    resolver: zodResolver(UserFormValidation),
+    resolver: zodResolver(LoginUserFormValidation),
     defaultValues: {
-      name:"",
       email:"",
       password: "",
     },
@@ -51,13 +53,10 @@ export default function RegisterUserForm() {
     setLoading(true);
     try {
       setError(false);
-      const newUser = await register(values);
-      // const verifyAccount = await verificationAccount();
-      if(newUser){
-        router.push(`/patient/${newUser.$id}/register`);
+      const user = await login(values);
+      if(user){
+        router.push(`/patient/${user.$id}/register`);
         setLoading(false) ;
-        // const currentUser = await getAccount();
-        // console.log(currentUser);
       }else{
         setError(true);
         setLoading(false) ;
@@ -69,18 +68,9 @@ export default function RegisterUserForm() {
   }
   return (
     <>
-    <Form {...form}>
+   {error &&  <CustomAlert title="Incorrect Credentials" state="failure" discr="your password or email is not correct" icon={<MdOutlineError color="red" size={20}/>}/>}
+    <Form {...form} >
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mb-4">
-    {error && <CustomAlert title="email Already exist" state="failure" discr="please enter another email" icon={<MdOutlineError size={20} color="red" />} />}
-      <CustomFormField
-          fieldType={FormFieldType.INPUT}
-          control={form.control}
-          name="name"
-          placeholder="Jhon Deo"
-          label="Name"
-          iconSrc={user}
-          iconAlt="email"
-        />
 
         <CustomFormField
           fieldType={FormFieldType.INPUT}
@@ -101,10 +91,14 @@ export default function RegisterUserForm() {
           iconSrc={lock}
           iconAlt="user color"
         />
+<Link href="/forget-password">
+<h2 className="text-primaryColor text-md underline mt-2">forget my password</h2>
 
-        <CustomButton type="submit" text="register"  loading={loading} />
+</Link>
+        <CustomButton type="submit" text="Login"  loading={loading} />
       </form>
-      <div className="text-center pt-10">
+
+      <div className="text-center pt-10 ">
       <div>
         login as 
          
@@ -114,10 +108,10 @@ export default function RegisterUserForm() {
 
       </div>
       <div>
-        I have an account just need to
-      <Link href="/login" className=""> <strong className="text-primaryColor" onClick={async()=>{
+        I don't have an account i need to
+      <Link href="/register" className=""> <strong className="text-primaryColor" onClick={async()=>{
         await logout();
-      }} >Login</strong></Link>
+      }} >register</strong></Link>
 !
       </div>
       </div>

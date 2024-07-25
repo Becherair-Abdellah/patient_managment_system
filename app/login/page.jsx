@@ -1,17 +1,18 @@
 import Image from "next/image";
-import register from "@/public/assets/register.svg";
+import register from "@/public/assets/login-password.svg";
 import RegisterUserForm from "@/components/forms/RegisterUserForm";
 import EnterKey from "@/components/EnterKey";
 import helth from "@/public/assets/health-check.svg";
+import LoginUserForm from "@/components/forms/LoginUserForm";
 const page = ({ searchParams: { admin } }) => {
   const IsAdmin = admin;
   console.log(IsAdmin);
   return (
     <>
       {IsAdmin && <EnterKey />}
-<div class="">
+<div >
    
-        <div class="grid md:grid-cols-2  w-full h-screen">
+        <div className="grid md:grid-cols-2  w-full h-screen">
 
           <div className="bg-primaryColor space-y-[5rem] p-6 hidden md:block">
          <div>
@@ -37,10 +38,10 @@ const page = ({ searchParams: { admin } }) => {
         <div className="p-6 space-y-0">
           <div>
             <h1 className="text-3xl md:text-4xl md: font-bold text-primaryColor">
-              Register Here!
+              Welecom back!
             </h1>
             <p className="text-md  font-semibold mt-3 text-gray-500">
-              to Get an appointemnt please create an Account to start regisetr
+              to Get an appointemnt please login to your Account to start regisetr
               patients and schedule appointments{" "}
             </p>
           </div>
@@ -53,7 +54,7 @@ const page = ({ searchParams: { admin } }) => {
               alt="medical healthycare image for appointment"
             />
           </div>
-          <RegisterUserForm className="text-lg text-white bg-primaryColor cursor-pointer w-full" />
+          <LoginUserForm/>
         </div>
 
        

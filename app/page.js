@@ -27,8 +27,9 @@ export default async  function Dashboard({searchParams}) {
       />
     </div>
 
-  <div>
-    <CustomButton href={'/register'} text={`Get Started`}/>
+  <div className="space-y-4">
+    <CustomButton href={'/register'} text={`Sign Up`}/>
+    <CustomButton href={'/login'} text={`Login`}/>
   </div>
 
    </div>
