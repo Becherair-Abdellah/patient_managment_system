@@ -53,11 +53,24 @@ export default function LoginUserForm() {
     setLoading(true);
     try {
       setError(false);
-      const user = await login(values);
-      if(user){
-        router.push(`/patient/${user.$id}/register`);
+      const response = await fetch(`http://localhost:3000/api/login`,{
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+      });
+      const data = await response.json();
+
+console.log(data);
+
+
+
+      if(data){
+        router.push(`/patient/${data.$id}/register`);
         setLoading(false) ;
       }else{
+        console.log('RUN HERE');
         setError(true);
         setLoading(false) ;
       }

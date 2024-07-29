@@ -22,7 +22,7 @@ import email from "@/public/assets/email-color.svg";
 import user from "@/public/assets/user-color.svg";
 import { UserFormValidation } from "@/lib/validation";
 import { useState } from "react";
-import {  logout, register, verificationAccount } from "@/lib/actions/register-actions";
+import {  getAccount, logout, register, verificationAccount } from "@/lib/actions/register-actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import CustomAlert from "../CustomAlert";
@@ -44,17 +44,38 @@ export default function RegisterUserForm() {
       password: "",
     },
   });
-
+  const test = async ()=>{
+try {
+  const response = await fetch("http://localhost:3000/api/logout",{
+    method:"POST"
+  });
+  const data = await response.json();
+  console.log(data);
+  if(data){
+    router.push('/login');
+  }
+} catch (error) {
+  console.log(error);
+}
+  }
   const onSubmit = async(values) =>{
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setLoading(true);
     try {
       setError(false);
-      const newUser = await register(values);
+      const response = await fetch(`http://localhost:3000/api/register`,{
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+      });
+      const data = await response.json();
+      console.log(data);
       // const verifyAccount = await verificationAccount();
-      if(newUser){
-        router.push(`/patient/${newUser.$id}/register`);
+      if(data){
+        router.push(`/patient/${data.$id}/register`);
         setLoading(false) ;
         // const currentUser = await getAccount();
         // console.log(currentUser);
@@ -121,6 +142,9 @@ export default function RegisterUserForm() {
 !
       </div>
       </div>
+      <button onClick={()=>{
+        test();
+      }} >test here</button>
     </Form>
     </>
   );
