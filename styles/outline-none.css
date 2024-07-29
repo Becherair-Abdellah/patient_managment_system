@@ -1,3 +1,4 @@
 .no-focus-outline input {
     outline: none !important;
+    @apply bg-primaryColor2
   }

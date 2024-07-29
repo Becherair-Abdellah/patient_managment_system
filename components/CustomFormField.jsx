@@ -1,6 +1,7 @@
 'use client'
 import Image from "next/image";
 import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import PhoneInput from "react-phone-number-input";
 import 'react-phone-number-input/style.css'
 import '@/styles/outline-none.css'
@@ -17,6 +18,7 @@ import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 import { Textarea } from "./ui/textarea";
 import { useState } from "react";
 import ShowHidePassword from "./ShowHidePassword";
+import { IoCalendarSharp } from "react-icons/io5";
 
 export const  FormFieldType =  {
     INPUT : "input",
@@ -88,7 +90,7 @@ const RenderInput = ({ field, props }) => {
             <Textarea
               placeholder={props.placeholder}
               {...field}
-              className="border-2 border-primaryColor pl-9 font-bold"
+              className="border-2 bg-primaryColor2 font-bold"
               disabled={props.disabled}
             />
           </FormControl>
@@ -103,7 +105,7 @@ const RenderInput = ({ field, props }) => {
               withCountryCallingCode
               value={field.value}
               onChange={field.onChange}
-              className="border-0 py-4 bg-primaryColor2  pl-9 outline-none  rounded-md font-bold no-focus-outline"
+              className="border-0 bg-primaryColor2 p-2 outline-none  rounded-md font-bold no-focus-outline"
          
             />
           </FormControl>
@@ -125,13 +127,8 @@ const RenderInput = ({ field, props }) => {
         );
       case FormFieldType.DATE_PICKER:
         return (
-          <div className="flex rounded-md border border-dark-500 bg-dark-400">
-            <Image
-              src="/assets/icons/calendar.svg"
-              height={24}
-              width={24}
-              alt="user"
-              className="ml-2 border-2 border-primaryColor pl-9 font-bold"
+          <div className="flex items-center p-1 rounded-md border border-dark-500 bg-dark-400">
+<IoCalendarSharp className="text-primaryColor" size={22}
             />
             <FormControl>
               <ReactDatePicker
@@ -150,11 +147,11 @@ const RenderInput = ({ field, props }) => {
           <FormControl>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger className="shad-select-trigger">
+                <SelectTrigger className="">
                   <SelectValue placeholder={props.placeholder} />
                 </SelectTrigger>
               </FormControl>
-              <SelectContent className="shad-select-content">
+              <SelectContent className="bg-white">
                 {props.children}
               </SelectContent>
             </Select>

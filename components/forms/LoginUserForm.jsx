@@ -122,9 +122,7 @@ console.log(data);
       </div>
       <div>
         I don't have an account i need to
-      <Link href="/register" className=""> <strong className="text-primaryColor" onClick={async()=>{
-        await logout();
-      }} >register</strong></Link>
+      <Link href="/register" className=""> <strong className="text-primaryColor"  >register</strong></Link>
 !
       </div>
       </div>

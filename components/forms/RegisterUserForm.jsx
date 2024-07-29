@@ -136,9 +136,7 @@ try {
       </div>
       <div>
         I have an account just need to
-      <Link href="/login" className=""> <strong className="text-primaryColor" onClick={async()=>{
-        await logout();
-      }} >Login</strong></Link>
+      <Link href="/login" className=""> <strong className="text-primaryColor">Login</strong></Link>
 !
       </div>
       </div>
