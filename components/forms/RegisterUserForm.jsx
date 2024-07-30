@@ -75,7 +75,7 @@ try {
       console.log(data);
       // const verifyAccount = await verificationAccount();
       if(data){
-        router.push(`/patient/${data.$id}/register`);
+        router.push(`/patient/${data.userId}/register`);
         setLoading(false) ;
         // const currentUser = await getAccount();
         // console.log(currentUser);

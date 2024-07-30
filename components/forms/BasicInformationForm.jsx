@@ -29,19 +29,25 @@ import {
   verificationAccount,
 } from "@/lib/actions/register-actions";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import CustomAlert from "../CustomAlert";
 import { MdOutlineError } from "react-icons/md";
 import { FaCheckCircle } from "react-icons/fa";
 import address from '@/public/assets/address.svg'
+import { register_patient } from "@/lib/actions/register-patient.action";
+import { basic_action, schedule_action } from "@/redux/features/progess-status";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 // import f from ''
 
 // const formSchema = z.object(UserFormValidation);
 
 export default function BasicInformationForm() {
+  const dispatch = useDispatch();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  console.log(router)
   const form = useForm({
     resolver: zodResolver(BasicInformationFormValidations),
     defaultValues: {
@@ -55,28 +61,20 @@ export default function BasicInformationForm() {
   const onSubmit = async (values) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    console.log(values);
     setLoading(true);
     try {
       setError(false);
-      //   const response = await fetch(`http://localhost:3000/api/register`,{
-      //     method: 'POST',
-      //     headers:{
-      //       'Content-Type': 'application/json'
-      //     },
-      //     body: JSON.stringify(values)
-      //   });
-      //   const data = await response.json();
-      //   console.log(data);
-      // const verifyAccount = await verificationAccount();
-      //   if(data){
-      // router.push(`/patient/${data.$id}/register`);
-      // setLoading(false) ;
-      // const currentUser = await getAccount();
-      // console.log(currentUser);
-      //   }else{
-      //     setError(true);
-      //     setLoading(false) ;
-      //   }
+   
+      const patient = await register_patient(values);
+        if(patient){
+      setLoading(false) ;
+      dispatch(basic_action());
+      router.push(`?patientId=${patient.$id}`)
+        }else{
+          setError(true);
+          setLoading(false) ;
+        }
     } catch (error) {
       console.log(error);
     }
@@ -133,7 +131,7 @@ export default function BasicInformationForm() {
           <CustomFormField
             fieldType={FormFieldType.TEXTAREA}
             control={form.control}
-            name="note"
+            name="notes"
             label="Notes"
             placeholder="i have some pain in my back"
           />

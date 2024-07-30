@@ -7,7 +7,7 @@ const bricolage_font = Bricolage_Grotesque({
    weight: ['200','300','400','500','600','700'],
    variable: "--bricolage-font",
   });
-import config from "@/lib/appwrite-config-export";
+  import { Our_provider } from "@/redux/Our_provider";
 export const metadata = {
   title: "AppointHealth",
   description: "A Healthcare managment system",
@@ -19,6 +19,7 @@ export default function RootLayout({ children }) {
     <html lang="en"  >
       
       <body className={cn("",bricolage_font.className)}>
+        <Our_provider>
       <ThemeProvider
             attribute="class"
             defaultTheme="light"
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
           >
             {children}
           </ThemeProvider>
+          </Our_provider>
           </body>
     </html>
   );

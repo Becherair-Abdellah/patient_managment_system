@@ -20,7 +20,7 @@ import CustomButton from "../CustomButton";
 import lock from "@/public/assets/lock.svg";
 import email from "@/public/assets/email-color.svg";
 import user from "@/public/assets/user-color.svg";
-import { BasicInformationFormValidations, UserFormValidation } from "@/lib/validation";
+import { BasicInformationFormValidations, ScheduleFormValidations, UserFormValidation } from "@/lib/validation";
 import { useState } from "react";
 import "@/styles/date-picker.css"
 import {
@@ -28,7 +28,7 @@ import {
   SelectItem,
 
 } from "@/components/ui/select"
-
+import { useSearchParams } from "next/navigation";
 import {
   getAccount,
   logout,
@@ -36,56 +36,65 @@ import {
   verificationAccount,
 } from "@/lib/actions/register-actions";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import CustomAlert from "../CustomAlert";
 import { MdOutlineError } from "react-icons/md";
 import { FaCheckCircle } from "react-icons/fa";
 import address from '@/public/assets/address.svg'
 import { Doctors } from "@/constants";
 import Image from "next/image";
+import { basic_action, schedule_action, success_action } from "@/redux/features/progess-status";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { register_appointment } from "@/lib/actions/register-patient.action";
 // import f from ''
 
 // const formSchema = z.object(UserFormValidation);
 
-export default function ScheduleAppointmentForm() {
+export default function ScheduleAppointmentForm({userId}) {
+  const dispatch = useDispatch();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const params = useSearchParams();
+  const patientId = params.get("patientId");
   const router = useRouter();
+  
+  console.log(typeof patientId);
+  
   const form = useForm({
-    resolver: zodResolver(BasicInformationFormValidations),
+    resolver: zodResolver(ScheduleFormValidations),
     defaultValues: {
       doctor: "",
       schedule: new Date(),
-      phone: "",
-      address: "",
+      reason: "",
       notes: "",
+      cancelReason:"",
     },
   });
   const onSubmit = async (values) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    console.log(values);
     setLoading(true);
     try {
       setError(false);
-      //   const response = await fetch(`http://localhost:3000/api/register`,{
-      //     method: 'POST',
-      //     headers:{
-      //       'Content-Type': 'application/json'
-      //     },
-      //     body: JSON.stringify(values)
-      //   });
-      //   const data = await response.json();
-      //   console.log(data);
-      // const verifyAccount = await verificationAccount();
-      //   if(data){
-      // router.push(`/patient/${data.$id}/register`);
-      // setLoading(false) ;
-      // const currentUser = await getAccount();
-      // console.log(currentUser);
-      //   }else{
-      //     setError(true);
-      //     setLoading(false) ;
-      //   }
+      const dataAppointemnt = {
+        ...values,
+        patient: patientId,
+        userId: userId,
+        status:"pending"
+      }
+      const appointment = await register_appointment(dataAppointemnt);
+      console.log(appointment);
+        if(appointment){
+      setLoading(false) ;
+      dispatch(schedule_action());
+      dispatch(success_action());
+      setTimeout(()=>router.push(`/${appointment.patient.$id}/appointment/${appointment.$id}`),5000);
+        }else{
+          setError(true);
+          setLoading(false) ;
+        }
     } catch (error) {
       console.log(error);
     }
@@ -136,21 +145,13 @@ export default function ScheduleAppointmentForm() {
               showTimeSelect
               dateFormat="MM/dd/yyyy  -  h:mm aa"
             />
-          <CustomFormField
-            fieldType={FormFieldType.PHONE_INPUT}
-            control={form.control}
-            name="phone"
-            label="Phone"
-          />
 
           <CustomFormField
             fieldType={FormFieldType.TEXTAREA}
             control={form.control}
-            name="address"
-            label="Address"
-            placeholder="460 city , Yalidine street"
-            iconSrc={address}
-            iconAlt="email"
+            name="reason"
+            label="Reasons"
+            placeholder="i have som pain on my back"
           />
 
           <CustomFormField
@@ -160,7 +161,7 @@ export default function ScheduleAppointmentForm() {
             label="Notes"
             placeholder="i have some pain in my back"
           />
-          <CustomButton type="submit" text="Next" loading={loading} />
+          <CustomButton type="submit" text="Schedule Appointment" loading={loading} />
         </form>
       </Form>
     </>

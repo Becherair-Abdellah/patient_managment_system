@@ -6,7 +6,8 @@ export async function middleware(request) {
     const { account } = await createSessionClient(request);
     console.log(request);
     try {
-        await account.get();
+       const user =  await account.get();
+       console.log("HERE TIME HEREIN OTHER TIMED",user)
         // If the user is authenticated, continue
         return NextResponse.next();
     } catch (error) {

@@ -2,17 +2,15 @@ import Image from "next/image";
 import register from "@/public/assets/register.svg";
 import RegisterUserForm from "@/components/forms/RegisterUserForm";
 import helth from "@/public/assets/health-check.svg";
-import { CustomProgress } from "@/components/CustomProgress";
 import { BsClipboard2DataFill } from "react-icons/bs";
 import { FaCheck } from "react-icons/fa";
 import ProgressBar from "@/components/ProgressBar";
-import IconBarProgress from "@/components/IconBarProgress";
 import { IoCalendar } from "react-icons/io5";
 import { GoGoal } from "react-icons/go";
 import LoginUserForm from "@/components/forms/LoginUserForm";
 import NewAppointmentForm from "@/components/forms/NewAppointmentForm";
-const page = ({ searchParams: { admin } }) => {
-  const isCheck = false;
+import Status from "@/components/Status";
+const page = async ({ params: { userid } }) => {
 
   return (
     <>
@@ -43,27 +41,16 @@ const page = ({ searchParams: { admin } }) => {
             </p>
           </div>
 
-          <div className="p-3 space-y-0">
+          <div className="p-3 space-y-0 flex justify-center items-center">
             {/* registration and appointments  */}
 
-            <div className="flex gap-4 w-full ">
+            <div className="flex items-center gap-4 w-full ">
               <div className="">
                 {/* icon bar */}
-
-                <ProgressBar
-                  icon={<BsClipboard2DataFill color="white" size={17} />}
-                />
-                <ProgressBar
-                  className="mt-[160px]"
-                  icon={<IoCalendar color="white" size={17} />}
-                />
-                <IconBarProgress
-                  className="mt-[160px]"
-                  icon={<GoGoal color="white" size={17} />}
-                />
+                <Status/>
               </div>
               <div className=" flex-1 w-full h-full">
-                <NewAppointmentForm/>
+                <NewAppointmentForm userId={userid}/>
               </div>
             </div>
 

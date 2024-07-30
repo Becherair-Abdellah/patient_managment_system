@@ -67,7 +67,8 @@ console.log(data);
 
 
       if(data){
-        router.push(`/patient/${data.$id}/register`);
+        console.log(data);
+        router.push(`/patient/${data.userId}/register`);
         setLoading(false) ;
       }else{
         console.log('RUN HERE');
