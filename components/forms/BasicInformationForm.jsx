@@ -20,7 +20,10 @@ import CustomButton from "../CustomButton";
 import lock from "@/public/assets/lock.svg";
 import email from "@/public/assets/email-color.svg";
 import user from "@/public/assets/user-color.svg";
-import { BasicInformationFormValidations, UserFormValidation } from "@/lib/validation";
+import {
+  BasicInformationFormValidations,
+  UserFormValidation,
+} from "@/lib/validation";
 import { useState } from "react";
 import {
   getAccount,
@@ -32,7 +35,7 @@ import Link from "next/link";
 import CustomAlert from "../CustomAlert";
 import { MdOutlineError } from "react-icons/md";
 import { FaCheckCircle } from "react-icons/fa";
-import address from '@/public/assets/address.svg'
+import address from "@/public/assets/address.svg";
 import { register_patient } from "@/lib/actions/register-patient.action";
 import { basic_action, schedule_action } from "@/redux/features/progess-status";
 import { useDispatch } from "react-redux";
@@ -47,7 +50,7 @@ export default function BasicInformationForm() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  console.log(router)
+  console.log(router);
   const form = useForm({
     resolver: zodResolver(BasicInformationFormValidations),
     defaultValues: {
@@ -65,22 +68,23 @@ export default function BasicInformationForm() {
     setLoading(true);
     try {
       setError(false);
-   
+
       const patient = await register_patient(values);
-        if(patient){
-      setLoading(false) ;
-      dispatch(basic_action());
-      router.push(`?patientId=${patient.$id}`)
-        }else{
-          setError(true);
-          setLoading(false) ;
-        }
+      if (patient) {
+        setLoading(false);
+        dispatch(basic_action());
+        router.push(`?patientId=${patient.$id}`);
+      } else {
+        setError(true);
+        setLoading(false);
+      }
     } catch (error) {
       console.log(error);
     }
   };
   return (
     <>
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mb-4">
           {error && (

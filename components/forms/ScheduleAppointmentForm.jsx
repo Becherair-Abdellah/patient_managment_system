@@ -49,6 +49,7 @@ import { useSelector } from "react-redux";
 import { register_appointment } from "@/lib/actions/register-patient.action";
 // import f from ''
 
+
 // const formSchema = z.object(UserFormValidation);
 
 export default function ScheduleAppointmentForm({userId}) {
@@ -96,21 +97,22 @@ export default function ScheduleAppointmentForm({userId}) {
           setLoading(false) ;
         }
     } catch (error) {
+      setError(true);
       console.log(error);
     }
   };
   return (
     <>
+          {error && (
+        <CustomAlert
+          title="Failed register"
+          state="failure"
+          discr="please Try Again"
+          icon={<MdOutlineError color="red" size={20} />}
+        />
+      )}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mb-4">
-          {error && (
-            <CustomAlert
-              title="email Already exist"
-              state="failure"
-              discr="please enter another email"
-              icon={<MdOutlineError size={20} color="red" />}
-            />
-          )}
           <CustomFormField
             fieldType={FormFieldType.SELECT}
             control={form.control}

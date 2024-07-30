@@ -1,7 +1,7 @@
 import Image from "next/image";
 import register from "@/public/assets/register.svg";
 import RegisterUserForm from "@/components/forms/RegisterUserForm";
-import helth from "@/public/assets/health-check.svg";
+import helth from "@/public/assets/register-patient.svg";
 import { BsClipboard2DataFill } from "react-icons/bs";
 import { FaCheck } from "react-icons/fa";
 import ProgressBar from "@/components/ProgressBar";
@@ -10,20 +10,21 @@ import { GoGoal } from "react-icons/go";
 import LoginUserForm from "@/components/forms/LoginUserForm";
 import NewAppointmentForm from "@/components/forms/NewAppointmentForm";
 import Status from "@/components/Status";
+
 const page = async ({ params: { userid } }) => {
 
   return (
     <>
+
       <div className="">
         <div class="grid md:grid-cols-2  w-full h-screen">
-          <div className="bg-primaryColor space-y-[5rem] p-6 hidden md:block">
+          <div className="space-y-[5rem] p-6 hidden md:block">
             <div>
-              <h1 className="text-6xl leading-[4rem] text-white font-bold mb-6">
-                Start your Health with us
+              <h1 className="text-6xl leading-[4rem] text-primaryColor font-bold mb-6">
+                Registration Patient!
               </h1>
-              <p className="text-lg font-semibold text-white">
-                Get Appointment with professional Doctors in Healthcare Fileds
-                snghd jah qkhcahdhe ahakjdhqky ascqs
+              <p className="text-lg font-semibold text-gray-700">
+              enter main information about you and write what is the reason of appointment and some notes if you need
               </p>
             </div>
 
@@ -36,7 +37,7 @@ const page = async ({ params: { userid } }) => {
               />
             </div>
 
-            <p className="text-center text-white">
+            <p className="text-center text-gray-700">
               @ copywrirte - all reserved 2024
             </p>
           </div>

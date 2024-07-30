@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import BasicInformationForm from "./BasicInformationForm";
 import ScheduleAppointmentForm from "./ScheduleAppointmentForm";
-import success from "@/public/assets/success.gif";
 import ali from "@/public/assets/user.svg";
 import appoi from "@/public/assets/appointment.svg";
 import Link from "next/link";
