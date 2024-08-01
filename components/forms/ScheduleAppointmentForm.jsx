@@ -79,19 +79,20 @@ export default function ScheduleAppointmentForm({userId}) {
     setLoading(true);
     try {
       setError(false);
-      const dataAppointemnt = {
+      const dataAppointment = {
         ...values,
         patient: patientId,
+        patientId: patientId,
         userId: userId,
         status:"pending"
       }
-      const appointment = await register_appointment(dataAppointemnt);
+      const appointment = await register_appointment(dataAppointment);
       console.log(appointment);
         if(appointment){
       setLoading(false) ;
       dispatch(schedule_action());
       dispatch(success_action());
-      setTimeout(()=>router.push(`/${appointment.patient.$id}/appointment/${appointment.$id}`),5000);
+      setTimeout(()=>router.push(`/patient/${appointment.patient.$id}/appointment/${appointment.$id}`),5000);
         }else{
           setError(true);
           setLoading(false) ;

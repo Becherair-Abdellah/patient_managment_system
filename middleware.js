@@ -18,5 +18,5 @@ export async function middleware(request) {
 
 // Configure the matcher to apply the middleware to the appropriate routes
 export const config = {
-    matcher: ['/patient/:id/register'], // Apply middleware to the home page and other protected routes
+    matcher: ['/patient/:id/register','/patient/:id/appointment/:id/'],  // Apply middleware to the home page and other protected routes
 };

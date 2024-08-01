@@ -45,7 +45,7 @@ import { useRouter } from "next/navigation";
 
 // const formSchema = z.object(UserFormValidation);
 
-export default function BasicInformationForm() {
+export default function BasicInformationForm({userId}) {
   const dispatch = useDispatch();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -68,8 +68,12 @@ export default function BasicInformationForm() {
     setLoading(true);
     try {
       setError(false);
-
-      const patient = await register_patient(values);
+      const patientData= {
+        userId: userId,
+        ...values,
+      }
+      const patient = await register_patient(patientData);
+      console.log(patient);
       if (patient) {
         setLoading(false);
         dispatch(basic_action());

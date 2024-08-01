@@ -25,7 +25,7 @@ const NewAppointmentForm = ({userId}) => {
             </h1>
             <span className="text-md text-gray-500 italic ">setp 1</span>
           </div>
-          <BasicInformationForm />
+          <BasicInformationForm userId={userId} />
         </>
       )}
       {basic && !schedule && (
