@@ -22,35 +22,59 @@ import { useEffect, useState } from "react";
 import { decryptKey, encryptKey } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import CustomButton from "./CustomButton";
-import { NEXT_PUBLIC_ACCESS_KEY } from "@/lib/appwrite-config-export";
+import { NEXT_PUBLIC_ACCESS_KEY, NEXT_PUBLIC_EMAIL, NEXT_PUBLIC_PASSWORD } from "@/lib/appwrite-config-export";
 const EnterKey = () => {
   const encryptedKey = typeof window !==  undefined? localStorage.getItem('accessKey'): null
-
+  const [error,setError] = useState(false);
+  const [accesKey,setAccessKey] = useState('');
+  const [loading,setLoading] = useState(false);
+  const router = useRouter();
+  const [open,setOpen]  =useState(true);
 useEffect(()=>{
-  if(NEXT_PUBLIC_ACCESS_KEY === decryptKey(encryptedKey).toString()){
-    setOpen(false)
-    router.push('/admin');
+  const login_admin = async()=>{
+    try {
+      if(NEXT_PUBLIC_ACCESS_KEY === decryptKey(encryptedKey).toString()){
+        setLoading(true);
+        const response = await fetch("http://localhost:3000/api/login",{
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            "email": NEXT_PUBLIC_EMAIL,
+            "password": NEXT_PUBLIC_PASSWORD,
+          }),
+  
+        });
+        const data = await response.json();
+        console.log(data);
+        if(data){
+          setLoading(false);
+          setOpen(false);
+          router.push("http://localhost:3000/admin/dashboard");
+        }
+        console.log("DEBUG");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  login_admin();
 },[encryptedKey]);
-    const [error,setError] = useState(false);
-    const [accesKey,setAccessKey] = useState('');
-    const [loading,setLoading] = useState(false);
-    const router = useRouter();
-    const [open,setOpen]  =useState(true);
+
     const handleOtpChange = (value) => {
   
         setAccessKey(value);
       };
 
-      const validateOTP = (e)=>{
+      const validateOTP = async (e)=>{
         e.preventDefault();
 
         if(accesKey === NEXT_PUBLIC_ACCESS_KEY){
             error?setError(false):'';
             localStorage.setItem("accessKey",encryptKey(accesKey));
             setLoading(true);
-            router.push('/admin');
-
         }else{
             setError(true);
         }
@@ -105,7 +129,7 @@ useEffect(()=>{
         </AlertDialogHeader>
         {error && <p className="text-red-600 text-center">Invalid access Key</p>}
         <AlertDialogFooter className="mt-5">
-          <AlertDialogCancel onClick={()=>{router.push('/register')}}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel onClick={()=>{router.push('/login')}}>Cancel</AlertDialogCancel>
           {/* <AlertDialogAction className="bg-primaryColor text-white font-bold" >
             Continue
           </AlertDialogAction> */}

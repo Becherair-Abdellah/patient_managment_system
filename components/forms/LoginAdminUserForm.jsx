@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { setErrorMap, z } from "zod";
 import { FormFieldType } from "../CustomFormField";
 import { Button } from "@/components/ui/button";
-import { createAdminClient } from "@/lib/appwrite.config";
 import {
   Form,
   FormControl,
@@ -36,11 +35,12 @@ import { MdOutlineError } from "react-icons/md";
 import { FaCheckCircle } from "react-icons/fa";
 import CustomAlert from "../CustomAlert";
 import { getLastAppointemnt } from "@/lib/actions/register-patient.action";
+import { createAdminClient } from "@/lib/appwrite.config";
 // import f from ''
 
 // const formSchema = z.object(UserFormValidation);
 
-export default function LoginUserForm() {
+export default function LoginAdminUserForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const router = useRouter();
@@ -67,14 +67,14 @@ export default function LoginUserForm() {
         body: JSON.stringify(values),
       });
       const data = await response.json();
-
+      const {account} =await  createAdminClient();
+      const user = await account.get();
+      console.log(user);
       console.log(data);
-      if (data) {
-        const appointment = await getLastAppointemnt(data.userId);
-        console.log(appointment);
-        console.log(data);
 
-        appointment ? router.push(`/patient/${appointment.patientId}/appointment/${appointment.$id}`):router.push(`/patient/${data.userId}/register`);
+      if (data) {
+        
+        console.log(user);
         setLoading(false);
       } else {
         console.log("RUN HERE");
@@ -123,30 +123,6 @@ export default function LoginUserForm() {
           </Link>
           <CustomButton type="submit" text="Login" loading={loading} />
         </form>
-
-        <div className="text-center pt-10 ">
-          <div>
-            login as
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-              }}
-            >
-              <Link href="login/?admin=true" className="">
-                {" "}
-                <strong className="text-primaryColor ml-1"> admin</strong>
-              </Link>
-            </button>
-          </div>
-          <div>
-            I don't have an account i need to
-            <Link href="/register" className="">
-              {" "}
-              <strong className="text-primaryColor">register</strong>
-            </Link>
-            !
-          </div>
-        </div>
       </Form>
     </>
   );
