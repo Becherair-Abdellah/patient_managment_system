@@ -13,6 +13,7 @@ module.exports = {
       backgroundColor:{
         primaryColor: "hsl(235,85,60)",
         primaryColor2: "hsla(0,0%,94%,1)",
+        primaryColor3: "#4251f014"
       },
       textColor:{
         primaryColor: "hsl(235,85,60)",
@@ -24,6 +25,11 @@ module.exports = {
       animation: {
         spin_fast: 'spin 0.5s linear infinite',
       },
+    gridTemplateColumns: {
+      largScreenGrid: '6% 15.5% 24% 24% 15.5% 15%',
+      mediumScreenGrid: '10% 30% 30% 30%',
+      smallScreenGrid: '10% 45% 45%',
+    },
     },
   },
   plugins: [],

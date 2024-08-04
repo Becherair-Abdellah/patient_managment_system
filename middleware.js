@@ -1,6 +1,7 @@
 // app/middleware.js
 import { NextResponse } from "next/server";
 import { createSessionClient } from "@/lib/appwrite.config";
+import { getPatients } from "./lib/actions/dashboard-actions";
 
 
 

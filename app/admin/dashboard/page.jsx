@@ -1,12 +1,4 @@
-'use client'
-
-import { NEXT_PUBLIC_ACCESS_KEY } from "@/lib/appwrite-config-export";
-import { decryptKey } from "@/lib/utils"
-import { useEffect, useState } from "react"
-
-
-
-import Link from "next/link"
+"use client";
 import {
   Activity,
   ArrowUpRight,
@@ -17,22 +9,17 @@ import {
   Package2,
   Search,
   Users,
-} from "lucide-react"
-
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+} from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,9 +27,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   Table,
   TableBody,
@@ -50,343 +37,190 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
+import Link from "next/link";
+import CustomCard from "./CustomCard";
+import { MdOutlineSick } from "react-icons/md";
+import { IoCalendarOutline } from "react-icons/io5";
+import { CgSandClock } from "react-icons/cg";
+import { MdCancel } from "react-icons/md";
+import {
+  getAppointmnets,
+  getPatients,
+  getStatusData,
+} from "@/lib/actions/dashboard-actions";
+import Cards from "@/components/Cards";
+import { useEffect, useState } from "react";
+import ROW from "@/components/ROW";
+import { FaKitMedical } from "react-icons/fa6";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+  } from "@/components/ui/pagination"
+  import { IoMdRefresh } from "react-icons/io";
+const page = () => {
+   const  PAGE_SIZE = 25;
+  const [patients, setPatients] = useState();
+  const [appointmnets, setAppointmnets] = useState();
+  const [status, setStatus] = useState();
+  const [page,setPage] = useState(1);
+  const [loading,setLoaing] = useState(true);
+  const [nbrAppointment,setNbrAppointment] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const data_patients = async () => {
+    try {
+      const data = await getPatients();
+      setPatients(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-export default function Dashboard() {
-  const [authorized,serAuthorized] = useState(false);
+  const data_status = async () => {
+    try {
+      const data = await getStatusData();
+      setStatus(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  useEffect(()=>{
-  const encryptedKey = typeof window !==  undefined? localStorage.getItem('accessKey'): null
-  if(decryptKey(encryptedKey) === NEXT_PUBLIC_ACCESS_KEY){
-    serAuthorized(true);
-  }
-  },[authorized]);
+  // effect for get totla pateints and schedule , pending ,cancelled appointmnets
+  useEffect(() => {
+    data_patients();
+    data_status();
+  }, []);
+ // effect for get appointmnets (pagination)
+  useEffect(() => {
+    const data_appointments = async () => {
+        try {
+          const offset = (page - 1) * PAGE_SIZE;
+          const data = await getAppointmnets(PAGE_SIZE,offset);
+          setAppointmnets(data);
+          setLoaing(false)
+          setNbrAppointment(offset);
+          setTotalPages(Math.ceil(data.total / PAGE_SIZE));
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      data_appointments();
+  }, [page]);
+
+  // previos and next buttons
+  const handleNextPage = () => {
+    if (page < totalPages) {
+        setPage((prevPage) => prevPage + 1);
+      }
+  };
+
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage((prevPage) => prevPage - 1);
+    }
+  };
   return (
-    <>
-    {authorized?
-    <>
-    <div className="flex min-h-screen w-full flex-col">
-      <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-        <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-          <Link
-            href="#"
-            className="flex items-center gap-2 text-lg font-semibold md:text-base"
-          >
-            <Package2 className="h-6 w-6" />
-            <span className="sr-only">Acme Inc</span>
-          </Link>
-          <Link
-            href="#"
-            className="text-foreground transition-colors hover:text-foreground"
-          >
-            Dashboard
-          </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Orders
-          </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Products
-          </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Customers
-          </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Analytics
-          </Link>
-        </nav>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              className="shrink-0 md:hidden"
-            >
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Toggle navigation menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left">
-            <nav className="grid gap-6 text-lg font-medium">
-              <Link
-                href="#"
-                className="flex items-center gap-2 text-lg font-semibold"
-              >
-                <Package2 className="h-6 w-6" />
-                <span className="sr-only">Acme Inc</span>
-              </Link>
-              <Link href="#" className="hover:text-foreground">
-                Dashboard
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Orders
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Products
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Customers
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Analytics
-              </Link>
-            </nav>
-          </SheetContent>
-        </Sheet>
-        <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <form className="ml-auto flex-1 sm:flex-initial">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search products..."
-                className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-              />
+    <main className="flex bg-gray-50 flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+      <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+        <CustomCard
+          nbr={patients?.total}
+          title="Patients"
+          discr="all patients in your database"
+          className="text-white font-bold bg-gradient-to-r from-indigo-500 to-gray-500"
+          icon={<MdOutlineSick size={20} />}
+        />
+        <CustomCard
+          nbr={status?.scheduled_appointments}
+          title="Scheduled"
+          discr="patients scheduled appointments"
+          className="text-white font-bold bg-gradient-to-r from-indigo-500 to-green-500"
+          icon={<IoCalendarOutline size={20} />}
+        />
+        <CustomCard
+          nbr={status?.pending_appointments}
+          title="Pending"
+          discr="patients pending appointments"
+          className="text-white font-bold bg-gradient-to-r from-indigo-500 to-blue-500"
+          icon={<CgSandClock size={20} />}
+        />
+        <CustomCard
+          nbr={status?.canceled_appointmnets}
+          title="Canceled"
+          discr="patients canceled appointments"
+          className="text-white font-bold bg-gradient-to-r from-indigo-500 to-red-500"
+          icon={<MdCancel size={20} />}
+        />
+      </div>
+      <div className="grid gap-4 md:gap-8 bg-white">
+        <Card className="xl:col-span-2" x-chunk="dashboard-01-chunk-4">
+          <CardHeader className="flex justify-between flex-row items-center">
+            <div className="grid gap-2">
+              <CardTitle>Appointmnets</CardTitle>
+              <CardDescription>
+                Recent Appointmnets from your PMS.
+              </CardDescription>
             </div>
-          </form>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </header>
-      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-        <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-          <Card x-chunk="dashboard-01-chunk-0">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Total Revenue
-              </CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">$45,231.89</div>
-              <p className="text-xs text-muted-foreground">
-                +20.1% from last month
-              </p>
-            </CardContent>
-          </Card>
-          <Card x-chunk="dashboard-01-chunk-1">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Subscriptions
-              </CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+2350</div>
-              <p className="text-xs text-muted-foreground">
-                +180.1% from last month
-              </p>
-            </CardContent>
-          </Card>
-          <Card x-chunk="dashboard-01-chunk-2">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Sales</CardTitle>
-              <CreditCard className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+12,234</div>
-              <p className="text-xs text-muted-foreground">
-                +19% from last month
-              </p>
-            </CardContent>
-          </Card>
-          <Card x-chunk="dashboard-01-chunk-3">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Now</CardTitle>
-              <Activity className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+573</div>
-              <p className="text-xs text-muted-foreground">
-                +201 since last hour
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-        <div className="grid gap-4 md:gap-8">
-          <Card
-            className="xl:col-span-2" x-chunk="dashboard-01-chunk-4"
-          >
-            <CardHeader className="flex flex-row items-center">
-              <div className="grid gap-2">
-                <CardTitle>Transactions</CardTitle>
-                <CardDescription>
-                  Recent transactions from your store.
-                </CardDescription>
-              </div>
-              <Button asChild size="sm" className="ml-auto gap-1">
-                <Link href="#">
-                  View All
-                  <ArrowUpRight className="h-4 w-4" />
-                </Link>
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Customer</TableHead>
-                    <TableHead className="hidden xl:table-column">
-                      Type
-                    </TableHead>
-                    <TableHead className="hidden xl:table-column">
-                      Status
-                    </TableHead>
-                    <TableHead className="hidden xl:table-column">
-                      Date
-                    </TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Liam Johnson</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        liam@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-23
-                    </TableCell>
-                    <TableCell className="text-right">$250.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Olivia Smith</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        olivia@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Refund
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Declined
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-24
-                    </TableCell>
-                    <TableCell className="text-right">$150.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Noah Williams</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        noah@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Subscription
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-25
-                    </TableCell>
-                    <TableCell className="text-right">$350.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Emma Brown</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        emma@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-26
-                    </TableCell>
-                    <TableCell className="text-right">$450.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Liam Johnson</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        liam@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-27
-                    </TableCell>
-                    <TableCell className="text-right">$550.00</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </div>
-      </main>
-    </div>
-    </>
-    :<div>YOU NOT AUTHORIZED</div>}
-    
-    </>
-  )
-}
+            <div className="bg-primaryColor p-2 rounded-md cursor-pointer font-bold">
+            <IoMdRefresh size={25} color="white" className="" />
+            </div>
+          </CardHeader>
 
+          <CardContent>
+            <div className="w-full">
+                <div className="py-4 px-2 text-gray-400 font-semibold  grid grid-cols-smallScreenGrid md:grid-cols-mediumScreenGrid  w-full border-t border-b lg:grid-cols-largScreenGrid">
+                    <span className="">ID</span>
+                    <span className="">NAME</span>
+                    <span className="hidden lg:grid">EMAIL</span>
+                    <span className="hidden lg:grid">DATE</span>
+                    <span className="hidden md:grid">DOCTOR</span>
+                    <span className="text-center">STATUS</span>
+                </div>
+                <ul>
+                {loading? <div className="w-full flex mt-5 justify-center p-2 animate-spin_fast"><IoMdRefresh size={25} color="" className="text-primaryColor" /></div>:
+                    appointmnets?.documents.map((appointment,index)=>(
+                        // <>{appointment.$id}</>
+                        <ROW key={index} ID={(index+1)+nbrAppointment} NAME={appointment?.patient?.name} EMAIL={appointment?.patient?.email} DATE={appointment?.schedule} DOCTOR={appointment?.doctor} STATUS={appointment?.status}/>
+                    ))}
+                </ul>
+            </div>
+          </CardContent>
+            {/* pagination  */}
+            <div className="grid my-5 gap-2">
+            <Pagination>
+  <PaginationContent>
+    <span className="text-gray-500 ">{appointmnets?.total} appointmnets</span>
+    <PaginationItem className="bg-primaryColor text-white font-bold rounded-md cursor-pointer">
+      <PaginationPrevious onClick={()=>{
+       handlePreviousPage();
+      }} disabled={page === 1} />
+    </PaginationItem>
+
+    <PaginationItem>
+      <div className=" bg-white rounded-md border">
+      <PaginationLink href="#" className="text-primaryColor font-bold">{page}</PaginationLink>
+      </div>
+    </PaginationItem>
+
+    <PaginationItem className="bg-primaryColor text-white font-bold rounded-md cursor-pointer">
+      <PaginationNext onClick={()=>{
+       handleNextPage();
+       console.log(page === totalPages);
+      }} disabled={page === totalPages}/>
+    </PaginationItem>
+    <span className="text-gray-500 ">of {totalPages} pages</span>
+  </PaginationContent>
+</Pagination>
+
+            </div>
+        </Card>
+      </div>
+    </main>
+  );
+};
+
+export default page;
