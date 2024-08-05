@@ -1,7 +1,5 @@
 'use client'
-
 import { decryptKey } from "@/lib/utils";
-
 import Link from "next/link"
 import {
   Activity,
@@ -82,7 +80,7 @@ export default function DashboardLayout({
         {authorized?
         <>
         <div className="flex min-h-screen w-full flex-col">
-          <header className="sticky top-0 flex h-16 items-center bg-white gap-4 border-b bg-background px-4 md:px-6 z-[111] ">
+          <header className="sticky top-0 flex h-16 items-center bg-white gap-4 border-b bg-background px-4 md:px-6">
     
             <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
               <Link
@@ -98,21 +96,6 @@ export default function DashboardLayout({
                 className="text-foreground transition-colors hover:text-foreground"
               >
                 Dashboard
-              </Link>
-    
-              <Link
-                href="/admin/patient"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Patient
-              </Link>
-    
-    
-              <Link
-                href="/admin/appointments"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Appointments
               </Link>
     
               <Link

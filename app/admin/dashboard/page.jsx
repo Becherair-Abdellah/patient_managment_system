@@ -90,6 +90,18 @@ const page = () => {
     }
   };
 
+  const data_appointments = async () => {
+    try {
+      const offset = (page - 1) * PAGE_SIZE;
+      const data = await getAppointmnets(PAGE_SIZE,offset);
+      setAppointmnets(data);
+      setLoaing(false)
+      setNbrAppointment(offset);
+      setTotalPages(Math.ceil(data.total / PAGE_SIZE));
+    } catch (error) {
+      console.log(error);
+    }
+  };
   // effect for get totla pateints and schedule , pending ,cancelled appointmnets
   useEffect(() => {
     data_patients();
@@ -97,18 +109,7 @@ const page = () => {
   }, []);
  // effect for get appointmnets (pagination)
   useEffect(() => {
-    const data_appointments = async () => {
-        try {
-          const offset = (page - 1) * PAGE_SIZE;
-          const data = await getAppointmnets(PAGE_SIZE,offset);
-          setAppointmnets(data);
-          setLoaing(false)
-          setNbrAppointment(offset);
-          setTotalPages(Math.ceil(data.total / PAGE_SIZE));
-        } catch (error) {
-          console.log(error);
-        }
-      };
+   
       data_appointments();
   }, [page]);
 
@@ -165,9 +166,15 @@ const page = () => {
                 Recent Appointmnets from your PMS.
               </CardDescription>
             </div>
-            <div className="bg-primaryColor p-2 rounded-md cursor-pointer font-bold">
+
+            <div className="bg-primaryColor p-2 rounded-md cursor-pointer font-bold" onClick={()=>{
+             data_appointments();
+             setLoaing(true);
+              console.log('run time');
+            }}>
             <IoMdRefresh size={25} color="white" className="" />
             </div>
+
           </CardHeader>
 
           <CardContent>
@@ -184,7 +191,8 @@ const page = () => {
                 {loading? <div className="w-full flex mt-5 justify-center p-2 animate-spin_fast"><IoMdRefresh size={25} color="" className="text-primaryColor" /></div>:
                     appointmnets?.documents.map((appointment,index)=>(
                         // <>{appointment.$id}</>
-                        <ROW key={index} ID={(index+1)+nbrAppointment} NAME={appointment?.patient?.name} EMAIL={appointment?.patient?.email} DATE={appointment?.schedule} DOCTOR={appointment?.doctor} STATUS={appointment?.status}/>
+                        
+                        <ROW key={index} ID={(index+1)+nbrAppointment} NAME={appointment?.patient?.name} EMAIL={appointment?.patient?.email} DATE={appointment?.schedule} DOCTOR={appointment?.doctor} STATUS={appointment?.status} appointment={appointment}/>
                     ))}
                 </ul>
             </div>

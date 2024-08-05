@@ -90,7 +90,7 @@ const RenderInput = ({ field, props }) => {
             <Textarea
               placeholder={props.placeholder}
               {...field}
-              className=" bg-primaryColor2 "
+              className=" bg-primaryColor2  resize-none"
               disabled={props.disabled}
             />
           </FormControl>
