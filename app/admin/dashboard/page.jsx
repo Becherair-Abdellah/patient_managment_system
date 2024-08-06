@@ -1,44 +1,11 @@
 "use client";
 import {
-  Activity,
-  ArrowUpRight,
-  CircleUser,
-  CreditCard,
-  DollarSign,
-  Menu,
-  Package2,
-  Search,
-  Users,
-} from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import Link from "next/link";
 import CustomCard from "./CustomCard";
 import { MdOutlineSick } from "react-icons/md";
 import { IoCalendarOutline } from "react-icons/io5";
@@ -49,10 +16,8 @@ import {
   getPatients,
   getStatusData,
 } from "@/lib/actions/dashboard-actions";
-import Cards from "@/components/Cards";
 import { useEffect, useState } from "react";
 import ROW from "@/components/ROW";
-import { FaKitMedical } from "react-icons/fa6";
 import {
     Pagination,
     PaginationContent,
@@ -170,7 +135,6 @@ const page = () => {
             <div className="bg-primaryColor p-2 rounded-md cursor-pointer font-bold" onClick={()=>{
              data_appointments();
              setLoaing(true);
-              console.log('run time');
             }}>
             <IoMdRefresh size={25} color="white" className="" />
             </div>
@@ -217,7 +181,6 @@ const page = () => {
     <PaginationItem className="bg-primaryColor text-white font-bold rounded-md cursor-pointer">
       <PaginationNext onClick={()=>{
        handleNextPage();
-       console.log(page === totalPages);
       }} disabled={page === totalPages}/>
     </PaginationItem>
     <span className="text-gray-500 ">of {totalPages} pages</span>

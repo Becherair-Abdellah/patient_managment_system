@@ -2,30 +2,10 @@
 import { decryptKey } from "@/lib/utils";
 import Link from "next/link"
 import {
-  Activity,
-  ArrowUpRight,
   CircleUser,
-  CreditCard,
-  DollarSign,
   Menu,
-  Package2,
-  Search,
-  Users,
 } from "lucide-react"
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,21 +14,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import { useEffect, useState } from "react";
 import { NEXT_PUBLIC_ACCESS_KEY } from "@/lib/appwrite-config-export";
 import { LuLayoutDashboard } from "react-icons/lu";
-import { MdOutlineSick } from "react-icons/md";
-import { GrSchedules } from "react-icons/gr";
 import { FaUserDoctor } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 export default function DashboardLayout({
@@ -130,16 +99,6 @@ export default function DashboardLayout({
                   <Link href="/admin/dashboard" onClick={()=>{setOpen(false)}} className="hover:text-foreground bg-primaryColor3 p-2 rounded-md text-primaryColor flex gap-2 items-center">
                   <LuLayoutDashboard size={20} className="text-primaryColor" />
                    <span className="text-md">dashboard</span>
-                  </Link>
-    
-                  <Link href="/admin/patient" onClick={()=>{setOpen(false)}} className="hover:text-foreground bg-primaryColor3 p-2 rounded-md text-primaryColor flex gap-2 items-center">
-                  <MdOutlineSick  size={20} className="text-primaryColor" />
-                   <span className="text-md">patient</span>
-                  </Link>
-    
-                  <Link href="/admin/appointments" onClick={()=>{setOpen(false)}} className="hover:text-foreground bg-primaryColor3 p-2 rounded-md text-primaryColor flex gap-2 items-center">
-                  <GrSchedules  size={20} className="text-primaryColor" />
-                   <span className="text-md">appointments</span>
                   </Link>
     
                   <Link href="/admin/doctors" onClick={()=>{setOpen(false)}} className="hover:text-foreground bg-primaryColor3 p-2 rounded-md text-primaryColor flex gap-2 items-center">

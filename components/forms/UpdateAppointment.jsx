@@ -2,55 +2,29 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { FormFieldType } from "../CustomFormField";
-import { Button } from "@/components/ui/button";
 import {
   Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import CustomFormField from "../CustomFormField";
 import CustomButton from "../CustomButton";
-import lock from "@/public/assets/lock.svg";
-import email from "@/public/assets/email-color.svg";
 import user from "@/public/assets/user-color.svg";
 import {
-  BasicInformationFormValidations,
   ScheduleFormValidations,
-  UserFormValidation,
 } from "@/lib/validation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "@/styles/date-picker.css";
 import { SelectItem } from "@/components/ui/select";
-import { useSearchParams } from "next/navigation";
-import {
-  getAccount,
-  logout,
-  register,
-  verificationAccount,
-} from "@/lib/actions/register-actions";
-import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
 import CustomAlert from "../CustomAlert";
 import { MdOutlineError } from "react-icons/md";
-import { FaCheckCircle } from "react-icons/fa";
-import address from "@/public/assets/address.svg";
-import { Doctors } from "@/constants";
 import Image from "next/image";
 import { update_appointment } from "@/lib/actions/dashboard-actions";
-// import f from ''
-
-// const formSchema = z.object(UserFormValidation);
-
+import { getAllDoctors } from "@/lib/actions/register-patient.action";
 export default function UpdateAppointment({appointment,changeState }) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [Doctors,setDoctors] = useState();
   const form = useForm({
     resolver: zodResolver(ScheduleFormValidations),
     defaultValues: {
@@ -63,10 +37,21 @@ export default function UpdateAppointment({appointment,changeState }) {
       cancelReason: appointment?.cancelReason || "",
     },
   });
+
+  const Doctors__ = async ()=>{
+    try {
+     const allDoctors = await getAllDoctors();
+     console.log(allDoctors);
+     setDoctors(allDoctors)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(()=>{
+    Doctors__();
+
+  },[]);
   const onSubmit = async (values) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
     setLoading(true);
     try {
       setError(false);
@@ -91,6 +76,7 @@ export default function UpdateAppointment({appointment,changeState }) {
       console.log(error);
     }
   };
+
   return (
     <>
       {error && (
@@ -112,11 +98,11 @@ export default function UpdateAppointment({appointment,changeState }) {
             iconSrc={user}
             iconAlt="email"
           >
-            {Doctors.map((doctor, i) => (
-              <SelectItem key={doctor.name + i} value={doctor.name}>
+            {Doctors?.map((doctor, i) => (
+              <SelectItem key={i} value={doctor.name}>
                 <div className="flex cursor-pointer items-center gap-2">
                   <Image
-                    src={doctor.image}
+                    src={doctor.photo}
                     width={32}
                     height={32}
                     alt="doctor"

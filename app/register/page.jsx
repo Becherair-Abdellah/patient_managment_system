@@ -5,7 +5,6 @@ import EnterKey from "@/components/EnterKey";
 import helth from "@/public/assets/health-check.svg";
 const page = ({ searchParams: { admin } }) => {
   const IsAdmin = admin;
-  console.log(IsAdmin);
   return (
     <>
       {IsAdmin && <EnterKey />}

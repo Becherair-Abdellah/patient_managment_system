@@ -1,10 +1,6 @@
 import Image from "next/image";
 import register from "@/public/assets/recover-password.svg";
-import RegisterUserForm from "@/components/forms/RegisterUserForm";
 import EnterKey from "@/components/EnterKey";
-import helth from "@/public/assets/health-check.svg";
-import LoginUserForm from "@/components/forms/LoginUserForm";
-import ForgetPasswordUserForm from "@/components/forms/ForgetPasswordUserForm";
 import ResetPasswordUserForm from "@/components/forms/ResetPasswordUserForm";
 const page = ({ searchParams: { admin } }) => {
   const IsAdmin = admin;

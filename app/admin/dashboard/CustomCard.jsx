@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { getPatients } from '@/lib/actions/dashboard-actions';
 import React from 'react'
 
 const CustomCard =({title,nbr ,icon,className,discr}) => {

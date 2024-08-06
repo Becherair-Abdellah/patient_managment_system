@@ -1,14 +1,10 @@
 "use client";
-import React, { useEffect } from "react";
 import { BsClipboard2DataFill } from "react-icons/bs";
 import ProgressBar from "./ProgressBar";
 import { IoCalendar } from "react-icons/io5";
 import { GoGoal } from "react-icons/go";
-import { useDispatch, useSelector } from "react-redux";
-import { basic_action, schedule_action } from "@/redux/features/progess-status";
+import { useSelector } from "react-redux";
 const Status = () => {
-  // const {progessStatus:{basic,schedule,success}} = useSelector((state)=>state);
-  const dispath = useDispatch();
   const basic = useSelector((state) => state.progessStatus.basic);
   const schedule = useSelector((state) => state.progessStatus.schedule);
   const success = useSelector((state) => state.progessStatus.success);

@@ -8,14 +8,13 @@ import {
 } from "@/components/ui/input-otp";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
+ 
 } from "@/components/ui/alert-dialog";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -47,13 +46,11 @@ useEffect(()=>{
   
         });
         const data = await response.json();
-        console.log(data);
         if(data){
           setLoading(false);
           setOpen(false);
           router.push("http://localhost:3000/admin/dashboard");
         }
-        console.log("DEBUG");
       }
     } catch (error) {
       console.log(error);

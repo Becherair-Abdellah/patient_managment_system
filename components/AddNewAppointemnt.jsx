@@ -3,7 +3,6 @@ import CustomButton from "./CustomButton"
 import { useSelector,useDispatch } from "react-redux"
 import { basic_action,success_action,schedule_action } from "@/redux/features/progess-status"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
 const AddNewAppointemnt = ({url}) => {
     const basic = useSelector((state) => state.progessStatus.basic);
     const schedule = useSelector((state) => state.progessStatus.schedule);

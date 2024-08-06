@@ -2,38 +2,19 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { setErrorMap, z } from "zod";
 import { FormFieldType } from "../CustomFormField";
-import { Button } from "@/components/ui/button";
-import { createAdminClient } from "@/lib/appwrite.config";
 import {
   Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import CustomFormField from "../CustomFormField";
 import CustomButton from "../CustomButton";
 import lock from "@/public/assets/lock.svg";
 import email from "@/public/assets/email-color.svg";
-import user from "@/public/assets/user-color.svg";
-import { LoginUserFormValidation, UserFormValidation } from "@/lib/validation";
+import { LoginUserFormValidation } from "@/lib/validation";
 import { useState } from "react";
-import {
-  logout,
-  register,
-  verificationAccount,
-} from "@/lib/actions/register-actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { login } from "@/lib/actions/login-action";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { MdOutlineError } from "react-icons/md";
-import { FaCheckCircle } from "react-icons/fa";
 import CustomAlert from "../CustomAlert";
 import { getLastAppointemnt } from "@/lib/actions/register-patient.action";
 // import f from ''
@@ -54,8 +35,6 @@ export default function LoginUserForm() {
   });
 
   const onSubmit = async (values) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     setLoading(true);
     try {
       setError(false);
@@ -68,16 +47,12 @@ export default function LoginUserForm() {
       });
       const data = await response.json();
 
-      console.log(data);
       if (data) {
         const appointment = await getLastAppointemnt(data.userId);
-        console.log(appointment);
-        console.log(data);
 
         appointment ? router.push(`/patient/${appointment.patientId}/appointment/${appointment.$id}`):router.push(`/patient/${data.userId}/register`);
         setLoading(false);
       } else {
-        console.log("RUN HERE");
         setError(true);
         setLoading(false);
       }

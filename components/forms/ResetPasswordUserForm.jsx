@@ -2,58 +2,29 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { setErrorMap, z } from "zod";
 import { FormFieldType } from "../CustomFormField";
-import { Button } from "@/components/ui/button";
 import {
   Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import CustomFormField from "../CustomFormField";
 import CustomButton from "../CustomButton";
 import lock from "@/public/assets/lock.svg";
-import email from "@/public/assets/email-color.svg";
-import user from "@/public/assets/user-color.svg";
 import {
-  ForgetPasswordUserFormValidation,
-  LoginUserFormValidation,
   ResetPasswordUserFormValidation,
-  UserFormValidation,
 } from "@/lib/validation";
 import { useState } from "react";
 import {
-  logout,
-  register,
-  verificationAccount,
-} from "@/lib/actions/register-actions";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import {
-  forgetpassword,
-  login,
   updatepassword,
 } from "@/lib/actions/login-action";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { MdOutlineError } from "react-icons/md";
 import { FaCheckCircle } from "react-icons/fa";
 import CustomAlert from "../CustomAlert";
-// import f from ''
-
-// const formSchema = z.object(UserFormValidation);
 
 export default function ResetPasswordUserForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [cnPassword,setCnPassword] = useState(false);
   const [success, setSuccess] = useState(false);
-  // console.log("params")
-  const router = useRouter();
   const params = new URLSearchParams(window?.location.search);
   const form = useForm({
     resolver: zodResolver(ResetPasswordUserFormValidation),
@@ -71,7 +42,6 @@ export default function ResetPasswordUserForm() {
    if(values.password === values.confirmpassword){
     try {
         setError(false);
-  console.log('DEBUG')
         // reset password page
   
         const dataToUpdatePassword = {

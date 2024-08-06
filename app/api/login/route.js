@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { login } from "@/lib/actions/login-action";
-import { getAccount } from "@/lib/actions/register-actions";
 
 export async function POST(request) {
 try {

@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import CustomBadge from "./CustomBadge";
 
 import {
   DropdownMenu,
@@ -15,34 +14,51 @@ import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
+  AlertDialogDescription,
   AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import UpdateAppointment from "./forms/UpdateAppointment";
-import { formatDateTime } from "@/lib/utils";
-import CancelAppointment from "./forms/CancelAppointment";
+import AddDoctorForm from "./forms/AddDoctorForm";
+import { delete_doctor } from "@/lib/actions/dashboard-actions";
+import CustomButton from "./CustomButton";
 
-const ROW = ({ ID, NAME, EMAIL, DOCTOR, DATE, STATUS, appointment }) => {
+const ROWDOCTOR = ({ ID, NAME, EMAIL, PHONE, PHOTO, DOCTOR }) => {
   const [isOpen, setIsOpen] = useState(false);
-  console.log(appointment);
-  // const [isOpenCancel, setIsOpenCancel] = useState(false);
-  const [typeForm, setTypeForm] = useState("schedule");
+  const [typeAction, setTypeAction] = useState("");
+  const [loading,setLoading] = useState(false);
   return (
     <>
       <AlertDialog open={isOpen} onOpenChange={setIsOpen} className=" z-[1111]">
         <AlertDialogContent className="bg-white gap-0">
-          {typeForm === "schedule" ? (
-            <UpdateAppointment
-              appointment={appointment}
-              changeState={setIsOpen}
-            />
+          {typeAction === "delete" ? (
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your
+                doctor and remove your data from our servers.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            
           ) : (
-            <CancelAppointment
-              appointment={appointment}
+            <AddDoctorForm
               changeState={setIsOpen}
+              doctor={DOCTOR}
+              state={typeAction}
             />
           )}
+          <AlertDialogFooter className="mt-6">
+            {typeAction === 'delete' && 
 
-          <AlertDialogFooter>
+            <CustomButton type="submit" text="Iam Shure" loading={loading} onClick={async() => {
+                setLoading(true);
+               const removedDoctor =  await delete_doctor(DOCTOR?.$id)
+                if(removedDoctor){
+                    setLoading(false);
+                    setIsOpen(false);
+                }
+              }} />
+            }
             <AlertDialogCancel
               onClick={() => {
                 setIsOpen(false);
@@ -55,27 +71,25 @@ const ROW = ({ ID, NAME, EMAIL, DOCTOR, DATE, STATUS, appointment }) => {
         </AlertDialogContent>
       </AlertDialog>
 
-      <li className="py-4 px-2 border-b grid grid-cols-smallScreenGrid md:grid-cols-mediumScreenGrid lg:grid-cols-largScreenGrid w-full text-gray-600 font-semibold text-[14px]">
+      <li className="py-4 px-2 border-b grid grid-cols-3 lg:grid-cols-4 w-full text-gray-600 font-semibold text-[14px]">
         <span className="break-all">{ID}</span>
-        <span className="break-all">{NAME}</span>
-        <span className="hidden lg:grid break-all">{EMAIL}</span>
-        <span className="hidden lg:grid break-all">
-          {formatDateTime(new Date(DATE)).dateTime}
-        </span>
-        <span className="hidden md:flex break-all gap-2 items-center">
+        <span className=" break-all gap-2 items-center flex ">
           <div>
             <img
-              src="https://github.com/shadcn.png"
+              src={PHOTO}
               width={25}
               height={25}
               alt="doctor iamge"
               className="rounded-full"
             />
           </div>
-          {DOCTOR}
+          {NAME}
         </span>
-        <span className="break-all text-end relative">
-          <CustomBadge status={STATUS} />
+
+        <span className="hidden lg:grid break-all">{EMAIL}</span>
+
+        <span className="break-all flex items-center justify-between relative">
+          {PHONE}
           <DropdownMenu className="">
             <DropdownMenuTrigger className="outline-none">
               <div className=" cursor-pointer">
@@ -87,22 +101,22 @@ const ROW = ({ ID, NAME, EMAIL, DOCTOR, DATE, STATUS, appointment }) => {
                 className=" text-green-600 bg-green-200 font-bold rounded-md cursor-pointer "
                 onClick={() => {
                   setIsOpen(true);
-                  setTypeForm("schedule");
+                  setTypeAction("edit");
                 }}
               >
                 <IoCalendarOutline className="mr-2" size={17} />
-                Schedule
+                EDIT
               </DropdownMenuItem>
 
               <DropdownMenuItem
                 className=" rounded-md cursor-pointer font-bold bg-red-200 text-red-800 mt-1"
                 onClick={() => {
                   setIsOpen(true);
-                  setTypeForm("cancel");
+                  setTypeAction("delete");
                 }}
               >
                 <MdCancel className="mr-2" size={17} />
-                Cancel
+                DELETE
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -112,4 +126,4 @@ const ROW = ({ ID, NAME, EMAIL, DOCTOR, DATE, STATUS, appointment }) => {
   );
 };
 
-export default ROW;
+export default ROWDOCTOR;

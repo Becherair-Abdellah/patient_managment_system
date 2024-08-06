@@ -1,12 +1,10 @@
 'use client'
 import React from 'react'
-import { BsClipboard2DataFill } from 'react-icons/bs'
 import { FaCheck } from 'react-icons/fa'
 import { Progress } from './ui/progress'
 import { useEffect, useState } from "react"
 
 const ProgressBar = ({className,icon,state,withoutbar}) => {
-  console.log(state);
   const [isCheck,setIsCheck] = useState(false);
   const [progress, setProgress] = useState(0)
   useEffect(() => {

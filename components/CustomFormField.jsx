@@ -19,6 +19,7 @@ import { Textarea } from "./ui/textarea";
 import { useState } from "react";
 import ShowHidePassword from "./ShowHidePassword";
 import { IoCalendarSharp } from "react-icons/io5";
+import { FileUploader } from "./FileUplaoder";
 
 export const  FormFieldType =  {
     INPUT : "input",
@@ -28,7 +29,8 @@ export const  FormFieldType =  {
     DATE_PICKER : "datePicker",
     SELECT : "select",
     SKELETON : "skeleton",
-    PASSWORD: "password"
+    PASSWORD: "password",
+    FILE_INPUT: 'fileinput'
 }
 
 const RenderInput = ({ field, props }) => {
@@ -159,7 +161,13 @@ const RenderInput = ({ field, props }) => {
         );
       case FormFieldType.SKELETON:
         return props.renderSkeleton ? props.renderSkeleton(field) : null;
-      default:
+        case FormFieldType.FILE_INPUT:
+        return (
+<FormControl>
+          <FileUploader files={field.value} onChange={field.onChange} />
+        </FormControl>
+        );
+        default:
         return null;
     }
   };

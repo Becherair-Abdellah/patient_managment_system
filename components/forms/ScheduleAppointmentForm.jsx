@@ -2,26 +2,16 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { FormFieldType } from "../CustomFormField";
-import { Button } from "@/components/ui/button";
 import {
   Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import CustomFormField from "../CustomFormField";
 import CustomButton from "../CustomButton";
-import lock from "@/public/assets/lock.svg";
-import email from "@/public/assets/email-color.svg";
 import user from "@/public/assets/user-color.svg";
-import { BasicInformationFormValidations, ScheduleFormValidations, UserFormValidation } from "@/lib/validation";
-import { useState } from "react";
+import {ScheduleFormValidations } from "@/lib/validation";
+import { useEffect, useState } from "react";
 import "@/styles/date-picker.css"
 import {
 
@@ -29,28 +19,13 @@ import {
 
 } from "@/components/ui/select"
 import { useSearchParams } from "next/navigation";
-import {
-  getAccount,
-  logout,
-  register,
-  verificationAccount,
-} from "@/lib/actions/register-actions";
-import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 import CustomAlert from "../CustomAlert";
 import { MdOutlineError } from "react-icons/md";
-import { FaCheckCircle } from "react-icons/fa";
-import address from '@/public/assets/address.svg'
-import { Doctors } from "@/constants";
 import Image from "next/image";
-import { basic_action, schedule_action, success_action } from "@/redux/features/progess-status";
+import {  schedule_action, success_action } from "@/redux/features/progess-status";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { register_appointment } from "@/lib/actions/register-patient.action";
-// import f from ''
-
-
-// const formSchema = z.object(UserFormValidation);
+import { getAllDoctors, register_appointment } from "@/lib/actions/register-patient.action";
 
 export default function ScheduleAppointmentForm({userId}) {
   const dispatch = useDispatch();
@@ -59,8 +34,7 @@ export default function ScheduleAppointmentForm({userId}) {
   const params = useSearchParams();
   const patientId = params.get("patientId");
   const router = useRouter();
-  
-  console.log(typeof patientId);
+  const [Doctors,setDoctors] = useState();
   
   const form = useForm({
     resolver: zodResolver(ScheduleFormValidations),
@@ -73,9 +47,6 @@ export default function ScheduleAppointmentForm({userId}) {
     },
   });
   const onSubmit = async (values) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
     setLoading(true);
     try {
       setError(false);
@@ -87,7 +58,7 @@ export default function ScheduleAppointmentForm({userId}) {
         status:"pending"
       }
       const appointment = await register_appointment(dataAppointment);
-      console.log(appointment);
+
         if(appointment){
       setLoading(false) ;
       dispatch(schedule_action());
@@ -102,6 +73,19 @@ export default function ScheduleAppointmentForm({userId}) {
       console.log(error);
     }
   };
+
+  const Doctors__ = async ()=>{
+    try {
+     const allDoctors = await getAllDoctors();
+     setDoctors(allDoctors)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(()=>{
+    Doctors__();
+
+  },[]);
   return (
     <>
           {error && (
@@ -123,20 +107,20 @@ export default function ScheduleAppointmentForm({userId}) {
             iconSrc={user}
             iconAlt="email"
           >
-              {Doctors.map((doctor, i) => (
-                <SelectItem key={doctor.name + i} value={doctor.name}>
-                  <div className="flex cursor-pointer items-center gap-2">
-                    <Image
-                      src={doctor.image}
-                      width={32}
-                      height={32}
-                      alt="doctor"
-                      className="rounded-full border border-dark-500"
-                    />
-                    <p>{doctor.name}</p>
-                  </div>
-                </SelectItem>
-              ))}
+ {Doctors?.map((doctor, i) => (
+              <SelectItem key={i} value={doctor.name}>
+                <div className="flex cursor-pointer items-center gap-2">
+                  <Image
+                    src={doctor.photo}
+                    width={32}
+                    height={32}
+                    alt="doctor"
+                    className="rounded-full border border-dark-500"
+                  />
+                  <p>{doctor.name}</p>
+                </div>
+              </SelectItem>
+            ))}
 
           </CustomFormField>
 

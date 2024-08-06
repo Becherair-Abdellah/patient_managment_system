@@ -1,6 +1,5 @@
 import Image from "next/image";
 import register from "@/public/assets/login-password.svg";
-import RegisterUserForm from "@/components/forms/RegisterUserForm";
 import EnterKey from "@/components/EnterKey";
 import helth from "@/public/assets/health-check.svg";
 import LoginUserForm from "@/components/forms/LoginUserForm";

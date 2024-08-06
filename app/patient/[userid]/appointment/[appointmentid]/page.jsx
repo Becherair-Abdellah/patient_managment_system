@@ -1,6 +1,4 @@
-import CustomButton from "@/components/CustomButton";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import success from "@/public/assets/success.svg";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

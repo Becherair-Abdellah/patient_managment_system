@@ -11,7 +11,6 @@ export async function middleware(request) {
   
   try {
     const user = await account.get();
-    console.log("HERE TIME HEREIN OTHER TIMED", user);
     //    labels
     // Router.push();
     //                                                                                                                          DDC

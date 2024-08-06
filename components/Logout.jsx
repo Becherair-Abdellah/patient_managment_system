@@ -16,7 +16,6 @@ const Logout = () => {
                 method: 'POST',            
             });
             const data = await response.json();
-            console.log(data);
         } catch (error) {
             console.log(error);
         }

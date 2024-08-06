@@ -1,20 +1,11 @@
 "use client";
-import React, { useState } from "react";
 import BasicInformationForm from "./BasicInformationForm";
 import ScheduleAppointmentForm from "./ScheduleAppointmentForm";
-import ali from "@/public/assets/user.svg";
-import appoi from "@/public/assets/appointment.svg";
-import Link from "next/link";
-import { Button } from "../ui/button";
-import Image from "next/image";
 import { BsFillSendCheckFill } from "react-icons/bs";
-import CustomButton from "../CustomButton";
 import { useSelector } from "react-redux";
 const NewAppointmentForm = ({userId}) => {
   const basic = useSelector((state) => state.progessStatus.basic);
   const schedule = useSelector((state) => state.progessStatus.schedule);
-  const success = useSelector((state) => state.progessStatus.success);
-  const [loading, setLoading] = useState(false);
   return (
     <div className=" p-3 rounded-md">
       {!basic && (

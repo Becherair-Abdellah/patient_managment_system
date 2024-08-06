@@ -5,25 +5,8 @@ import { FaUserInjured } from "react-icons/fa";
 import { IoCalendar } from "react-icons/io5";
 import { FaHourglassStart } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
-import { getAccount } from "@/lib/actions/register-actions";
-import { redirect } from "next/dist/server/api-utils";
 const TabComponent = () => {
-  const [activeTab, setActiveTab] = useState("today");
-  
-  const renderContent =  () => {
-   
-    switch (activeTab) {
-      case "today":
-        return <p>Content for This Today</p>;
-      case "week":
-        return <p>Content for This Week</p>;
-      case "month":
-        return <p>Content for This Month</p>;
-      default:
-        return null;
-    }
-  };
-
+const [activeTab, setActiveTab] = useState("today");
   return (
     <>
       <div className="flex gap-4  mb-4 mt-4 text-gray-700">

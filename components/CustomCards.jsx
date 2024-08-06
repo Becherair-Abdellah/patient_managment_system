@@ -3,11 +3,7 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
-import { FaUserInjured } from "react-icons/fa";
 import clsx from "clsx";
 const CustomCards = ({state,total,text,icon}) => {
   // `border-none ${state ==='schedule'?bg-gray-100 p-4 text-gray-600:''}`

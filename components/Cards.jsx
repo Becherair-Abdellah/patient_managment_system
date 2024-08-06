@@ -1,10 +1,8 @@
 "use client";
 import CustomCard from "@/app/admin/dashboard/CustomCard";
-import React, { useEffect, useState } from "react";
 import { CgSandClock } from "react-icons/cg";
 import { IoCalendarOutline } from "react-icons/io5";
 import { MdCancel, MdOutlineSick } from "react-icons/md";
-import {  getAppointmnets, getPatients } from "@/lib/actions/dashboard-actions";
 
 const Cards = () => {
 

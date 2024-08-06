@@ -2,19 +2,10 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { FormFieldType } from "../CustomFormField";
-import { Button } from "@/components/ui/button";
 import {
   Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import CustomFormField from "../CustomFormField";
 import CustomButton from "../CustomButton";
 import lock from "@/public/assets/lock.svg";
@@ -22,16 +13,10 @@ import email from "@/public/assets/email-color.svg";
 import user from "@/public/assets/user-color.svg";
 import { UserFormValidation } from "@/lib/validation";
 import { useState } from "react";
-import {  getAccount, logout, register, verificationAccount } from "@/lib/actions/register-actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import CustomAlert from "../CustomAlert";
 import { MdOutlineError } from "react-icons/md";
-import { FaCheckCircle } from "react-icons/fa";
-// import f from ''
-
-// const formSchema = z.object(UserFormValidation);
-
 export default function RegisterUserForm() {
   const [error,setError] = useState(false);
   const [loading,setLoading] = useState(false);
@@ -50,7 +35,6 @@ try {
     method:"POST"
   });
   const data = await response.json();
-  console.log(data);
   if(data){
     router.push('/login');
   }
@@ -72,13 +56,9 @@ try {
         body: JSON.stringify(values)
       });
       const data = await response.json();
-      console.log(data);
-      // const verifyAccount = await verificationAccount();
       if(data){
         router.push(`/patient/${data.userId}/register`);
         setLoading(false) ;
-        // const currentUser = await getAccount();
-        // console.log(currentUser);
       }else{
         setError(true);
         setLoading(false) ;
@@ -140,9 +120,6 @@ try {
 !
       </div>
       </div>
-      <button onClick={()=>{
-        test();
-      }} >test here</button>
     </Form>
     </>
   );
