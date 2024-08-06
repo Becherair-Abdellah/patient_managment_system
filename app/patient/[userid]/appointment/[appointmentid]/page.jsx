@@ -29,7 +29,7 @@ const page = async ({ params: { userid, appointmentid } }) => {
             has been successfully submitted!
           </h2>
           <p className="text-gray-700 mb-2">
-            We'll be in touch shortly to confirm.
+            We&apos;ll be in touch shortly to confirm.
           </p>
         </section>
 

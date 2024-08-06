@@ -14,9 +14,6 @@ import {
   ForgetPasswordUserFormValidation,
 } from "@/lib/validation";
 import { useState } from "react";
-import {
-  logout,
-} from "@/lib/actions/register-actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -108,9 +105,6 @@ export default function ForgetPasswordUserForm() {
                     {" "}
                     <strong
                       className="text-primaryColor"
-                      onClick={async () => {
-                        await logout();
-                      }}
                     >
                       login
                     </strong>

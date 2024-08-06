@@ -37,7 +37,7 @@ import {
 import AddDoctorForm from "@/components/forms/AddDoctorForm";
 import ROWDOCTOR from "@/components/ROWDOCTOR";
 
-const page = () => {
+const Page = () => {
   const PAGE_SIZE = 25;
   const [doctors, setDoctors] = useState();
   const [page, setPage] = useState(1);
@@ -194,4 +194,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

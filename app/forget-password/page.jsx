@@ -47,7 +47,7 @@ const page = ({ searchParams: { admin } }) => {
                   Forget Password?
                 </h1>
                 <p className="text-md  font-semibold mt-3 text-gray-500">
-                  Don't worry! it accure, Please enter your email address linked
+                  Don&apos;t worry! it accure, Please enter your email address linked
                   with your account
                 </p>
               </div>

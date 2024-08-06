@@ -28,7 +28,7 @@ import {
     PaginationPrevious,
   } from "@/components/ui/pagination"
   import { IoMdRefresh } from "react-icons/io";
-const page = () => {
+const Page = () => {
    const  PAGE_SIZE = 25;
   const [patients, setPatients] = useState();
   const [appointmnets, setAppointmnets] = useState();
@@ -194,4 +194,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

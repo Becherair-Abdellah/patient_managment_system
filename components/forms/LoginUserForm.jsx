@@ -114,7 +114,7 @@ export default function LoginUserForm() {
             </button>
           </div>
           <div>
-            I don't have an account i need to
+            I don&apos;t have an account i need to
             <Link href="/register" className="">
               {" "}
               <strong className="text-primaryColor">register</strong>
