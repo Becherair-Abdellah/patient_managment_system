@@ -31,7 +31,7 @@ export default function RegisterUserForm() {
   });
   const test = async ()=>{
 try {
-  const response = await fetch("http://localhost:3000/api/logout",{
+  const response = await fetch("/api/logout",{
     method:"POST"
   });
   const data = await response.json();

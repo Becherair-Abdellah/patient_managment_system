@@ -34,7 +34,7 @@ useEffect(()=>{
     try {
       if(NEXT_PUBLIC_ACCESS_KEY === decryptKey(encryptedKey).toString()){
         setLoading(true);
-        const response = await fetch("http://localhost:3000/api/login",{
+        const response = await fetch("/api/login",{
           method: 'POST',
           headers: {
             "Content-Type": "application/json",
@@ -49,7 +49,7 @@ useEffect(()=>{
         if(data){
           setLoading(false);
           setOpen(false);
-          router.push("http://localhost:3000/admin/dashboard");
+          router.push("/admin/dashboard");
         }
       }
     } catch (error) {

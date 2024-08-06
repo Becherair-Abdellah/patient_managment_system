@@ -14,6 +14,6 @@ try {
   });
   return Response.json(user);
 } catch (error) {
-  return Response.json({"error":error});
+  return Response.json('');
 }
 }

@@ -40,7 +40,7 @@ export default function LoginAdminUserForm() {
     setLoading(true);
     try {
       setError(false);
-      const response = await fetch(`http://localhost:3000/api/login`, {
+      const response = await fetch(`/api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
