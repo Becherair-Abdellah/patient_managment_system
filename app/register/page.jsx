@@ -15,10 +15,10 @@ const page = ({ searchParams: { admin } }) => {
           <div className="bg-primaryColor space-y-[5rem] p-6 hidden md:block">
          <div>
          <h1 className="text-6xl leading-[4rem] text-white font-bold mb-6">
-            Start your Health with us
+         Start Your Health Journey with Us
           </h1>
           <p className="text-lg font-semibold text-white">
-            Get Appointment with professional Doctors in Healthcare Fileds snghd jah qkhcahdhe ahakjdhqky ascqs 
+          Book an appointment with experienced healthcare professionals and receive expert care tailored to your needs. 
           </p>
          </div>
 
@@ -36,11 +36,10 @@ const page = ({ searchParams: { admin } }) => {
         <div className="p-6 space-y-0">
           <div>
             <h1 className="text-3xl md:text-4xl md: font-bold text-primaryColor">
-              Register Here!
+            Register Here!
             </h1>
             <p className="text-md  font-semibold mt-3 text-gray-500">
-              to Get an appointemnt please create an Account to start regisetr
-              patients and schedule appointments{" "}
+            To book appointments, please create an account. This will allow you to register patients and schedule appointments.
             </p>
           </div>
 

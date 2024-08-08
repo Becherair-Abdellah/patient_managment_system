@@ -21,6 +21,7 @@ import { MdOutlineError } from "react-icons/md";
 import Image from "next/image";
 import { update_appointment } from "@/lib/actions/dashboard-actions";
 import { getAllDoctors } from "@/lib/actions/register-patient.action";
+import d_peter from '@/public/assets/dr-peter.png'
 export default function UpdateAppointment({appointment,changeState }) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -102,7 +103,7 @@ export default function UpdateAppointment({appointment,changeState }) {
               <SelectItem key={i} value={doctor.name}>
                 <div className="flex cursor-pointer items-center gap-2">
                   <Image
-                    src={doctor.photo}
+                    src={doctor.photo || d_peter}
                     width={32}
                     height={32}
                     alt="doctor"

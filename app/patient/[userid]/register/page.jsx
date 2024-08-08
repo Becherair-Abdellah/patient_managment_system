@@ -14,10 +14,10 @@ const page = async ({ params: { userid } }) => {
           <div className="space-y-[5rem] p-6 hidden md:block">
             <div>
               <h1 className="text-6xl leading-[4rem] text-primaryColor font-bold mb-6">
-                Registration Patient!
+              Register Patient
               </h1>
               <p className="text-lg font-semibold text-gray-700">
-              enter main information about you and write what is the reason of appointment and some notes if you need
+              Enter your basic information, provide the reason for the appointment, and include any additional notes if needed.
               </p>
             </div>
 

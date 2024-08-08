@@ -26,7 +26,7 @@ import Image from "next/image";
 import {  schedule_action, success_action } from "@/redux/features/progess-status";
 import { useDispatch } from "react-redux";
 import { getAllDoctors, register_appointment } from "@/lib/actions/register-patient.action";
-
+import d_peter from '@/public/assets/dr-peter.png'
 export default function ScheduleAppointmentForm({userId}) {
   const dispatch = useDispatch();
   const [error, setError] = useState(false);
@@ -108,16 +108,17 @@ export default function ScheduleAppointmentForm({userId}) {
             iconAlt="email"
           >
  {Doctors?.map((doctor, i) => (
-              <SelectItem key={i} value={doctor.name}>
+              <SelectItem key={i} value={doctor?.name}>
+               
                 <div className="flex cursor-pointer items-center gap-2">
                   <Image
-                    src={doctor.photo}
+                    src={doctor?.photo || d_peter}
                     width={32}
                     height={32}
                     alt="doctor"
                     className="rounded-full border border-dark-500"
                   />
-                  <p>{doctor.name}</p>
+                  <p>{doctor?.name}</p>
                 </div>
               </SelectItem>
             ))}

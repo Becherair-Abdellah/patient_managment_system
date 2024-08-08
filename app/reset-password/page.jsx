@@ -13,10 +13,10 @@ const page = ({ searchParams: { admin } }) => {
 
          <div className="mb-5">
                 <h1 className="text-3xl md:text-4xl md: font-bold text-primaryColor">
-                 Create New Password!
+                Create a New Password
                 </h1>
                 <p className="text-md  font-semibold mt-3 text-gray-500">
-               your new password must be unique from those perviously  used
+                Your new password must be different from any previous passwords
                 </p>
               </div>
 

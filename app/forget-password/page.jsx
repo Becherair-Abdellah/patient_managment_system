@@ -44,11 +44,10 @@ const page = ({ searchParams: { admin } }) => {
             <div>
               <div className="mb-5">
                 <h1 className="text-3xl md:text-4xl md: font-bold text-primaryColor">
-                  Forget Password?
+                Forgot Your Password?
                 </h1>
                 <p className="text-md  font-semibold mt-3 text-gray-500">
-                  Don&apos;t worry! it accure, Please enter your email address linked
-                  with your account
+                  Don&apos;t worry! It happens. Please enter the email address linked to your account to reset your password.
                 </p>
               </div>
 

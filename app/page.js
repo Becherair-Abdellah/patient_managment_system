@@ -7,8 +7,8 @@ export default async  function Dashboard({searchParams}) {
    <div className="flex justify-center items-center h-screen">
    <div className=" md:text-center h-fit pt-[70px] md:max-w-[650px]  space-y-14 p-5">
    <div>
-      <h1 className="text-4xl font-bold text-primaryColor">Welcom!</h1>
-      <p className="text-xl  font-semibold mt-3 text-gray-500">Hi,Now you can to get an appoitnment with any doctors in any filed with a good price and any time Just Start Now! </p>
+      <h1 className="text-4xl font-bold text-primaryColor">Welcome!</h1>
+      <p className="text-xl  font-semibold mt-3 text-gray-500">Hi there! You can now book an appointment with any doctor in any field at a great price and at your convenience. Get started now! </p>
     </div>
 
     <div className="flex justify-center items-center ">

@@ -82,10 +82,10 @@ useEffect(()=>{
       <AlertDialogContent className="bg-white rounded-md w-[95%] md:w-full">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-3xl text-primaryColor">
-            Enter your Access Key
+          Enter Your Access Key
           </AlertDialogTitle>
           <AlertDialogDescription className="">
-            please Enter your accessKey to access your admin dashboard
+          Please enter your access key to access your admin dashboard.
           </AlertDialogDescription>
           <div className="w-full flex justify-center">
             <Image src={keyimag} width={150} alt="access key" />

@@ -43,7 +43,7 @@ const NewAppointmentForm = ({userId}) => {
             <BsFillSendCheckFill className="text-primaryColor" size={100} />
           </div>
           <p>
-            your Appointment has been successful sent we confirm that shortly
+          Your Appointment Has Been Successfully Sent We will confirm it shortly. 
           </p>
         </div>
 </>
